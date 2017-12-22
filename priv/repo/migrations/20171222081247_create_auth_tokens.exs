@@ -4,10 +4,12 @@ defmodule Voyager.Repo.Migrations.CreateAuthTokens do
   def change do
     create table(:auth_tokens, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :jwt, :text
-      add :jti, :string
-      add :aud, :string
-      add :exp, :integer
+
+      add :jwt, :text, null: false
+      add :jti, :string, null: false
+      add :aud, :string, null: false
+      add :exp, :integer, null: false
+
       add :user_id, references(
         :users, type: :binary_id, on_delete: :nothing
       )
