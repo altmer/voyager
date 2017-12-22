@@ -1,5 +1,10 @@
 defmodule Voyager.Application do
+  @moduledoc """
+  Main Voyager application
+  """
   use Application
+
+  alias VoyagerWeb.Endpoint
 
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
@@ -12,7 +17,8 @@ defmodule Voyager.Application do
       supervisor(Voyager.Repo, []),
       # Start the endpoint when the application starts
       supervisor(VoyagerWeb.Endpoint, []),
-      # Start your own worker by calling: Voyager.Worker.start_link(arg1, arg2, arg3)
+      # Start your own worker by calling:
+      # Voyager.Worker.start_link(arg1, arg2, arg3)
       # worker(Voyager.Worker, [arg1, arg2, arg3]),
     ]
 
@@ -25,7 +31,7 @@ defmodule Voyager.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    VoyagerWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end
