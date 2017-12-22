@@ -4,6 +4,7 @@ use Mix.Config
 # you can enable the server option below.
 config :voyager, VoyagerWeb.Endpoint,
   http: [port: 4001],
+  secret_key_base: "svWE1TQ9lYke32lLUdE5jnV+EqI7nObwZ/rFYLH+s6BFRKU/prg559ADuLaohNx9_test",
   server: false
 
 # Print only warnings and errors during test
@@ -11,9 +12,5 @@ config :logger, level: :warn
 
 # Configure your database
 config :voyager, Voyager.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
   database: "voyager_test",
-  hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

@@ -12,10 +12,16 @@ config :voyager,
 # Configures the endpoint
 config :voyager, VoyagerWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "svWE1TQ9lYke32lLUdE5jnV+EqI7nObwZ/rFYLH+s6BFRKU/prg559ADuLaohNx9",
+  secret_key_base: "${SECRET_KEY_BASE}",
   render_errors: [view: VoyagerWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Voyager.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Voyager.PubSub, adapter: Phoenix.PubSub.PG2]
+
+config :voyager, Voyager.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  hostname: "localhost",
+  port: "25432",
+  username: "postgres",
+  password: ""
 
 # Configures Elixir's Logger
 config :logger, :console,
