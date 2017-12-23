@@ -4,6 +4,7 @@ defmodule Voyager.Application do
   """
   use Application
 
+  alias Voyager.Accounts.AuthTokenSweeper
   alias VoyagerWeb.Endpoint
 
   # See https://hexdocs.pm/elixir/Application.html
@@ -17,9 +18,7 @@ defmodule Voyager.Application do
       supervisor(Voyager.Repo, []),
       # Start the endpoint when the application starts
       supervisor(VoyagerWeb.Endpoint, []),
-      # Start your own worker by calling:
-      # Voyager.Worker.start_link(arg1, arg2, arg3)
-      # worker(Voyager.Worker, [arg1, arg2, arg3]),
+      worker(AuthTokenSweeper, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
