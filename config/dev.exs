@@ -36,3 +36,5 @@ config :phoenix, :stacktrace_depth, 20
 config :voyager, Voyager.Repo,
   database: "voyager_dev",
   pool_size: 10
+
+import_config "dev.secret.exs"

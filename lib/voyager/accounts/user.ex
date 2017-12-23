@@ -4,21 +4,31 @@ defmodule Voyager.Accounts.User do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Voyager.Accounts.User
+  alias Voyager.Accounts.{Avatar, User}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   @derive {Phoenix.Param, key: :id}
 
   schema "users" do
-    field :avatar, :string
-    field :currency, :string
     field :email, :string
+    field :name, :string
+
+    field :avatar, Avatar.Type
+    field :crop_x, :string, virtual: true
+    field :crop_y, :string, virtual: true
+    field :crop_width, :string, virtual: true
+    field :crop_height, :string, virtual: true
+
+    field :currency, :string
+
     field :encrypted_password, :string
+    field :reset_password_jti, :string
+    field :password, :string, virtual: true
+    field :old_password, :string, virtual: true
+
     field :home_town_id, :string
     field :locale, :string
-    field :name, :string
-    field :reset_password_jti, :string
 
     timestamps()
   end

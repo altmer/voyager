@@ -1,7 +1,7 @@
-defmodule VoyagerWeb.PageController do
+defmodule VoyagerWeb.RootController do
   use VoyagerWeb, :controller
 
   def index(conn, _params) do
-    render conn, "index.html"
+    render conn, "index.json"
   end
 end

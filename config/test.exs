@@ -14,3 +14,6 @@ config :logger, level: :warn
 config :voyager, Voyager.Repo,
   database: "voyager_test",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :arc,
+  storage: Arc.Storage.Local

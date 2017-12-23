@@ -23,6 +23,22 @@ config :voyager, Voyager.Repo,
   username: "postgres",
   password: ""
 
+config :arc,
+  storage: Arc.Storage.S3,
+  bucket: "${AWS_S3_BUCKET}",
+  virtual_host: true
+
+config :ex_aws,
+  access_key_id: "${AWS_S3_KEY}",
+  secret_access_key: "${AWS_S3_SECRET}",
+  region: "eu-central-1",
+  host: "s3.eu-central-1.amazonaws.com",
+  s3: [
+    scheme: "https://",
+    host: "s3.eu-central-1.amazonaws.com",
+    region: "eu-central-1"
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
