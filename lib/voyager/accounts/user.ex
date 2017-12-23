@@ -7,12 +7,11 @@ defmodule Voyager.Accounts.User do
 
   import Ecto.Changeset
 
-  alias Voyager.Accounts.{Avatar, User}
+  alias Voyager.Accounts.Avatar
   alias Comeonin.Bcrypt
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  @derive {Phoenix.Param, key: :id}
 
   schema "users" do
     field :email, :string
@@ -39,7 +38,7 @@ defmodule Voyager.Accounts.User do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email, :encrypted_password, :password])
+    |> cast(params, [:name, :email, :encrypted_password, :password, :locale])
     |> validate_required([:name, :email, :password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5)
