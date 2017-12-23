@@ -5,7 +5,8 @@ defmodule Voyager.Accounts.AuthToken do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Voyager.Accounts.AuthToken
+
+  alias Voyager.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -17,15 +18,14 @@ defmodule Voyager.Accounts.AuthToken do
     field :jti, :string
     field :jwt, :string
 
-    belongs_to :user, Voyager.Accounts.User
+    belongs_to :user, User
 
     timestamps()
   end
 
-  @doc false
-  def changeset(%AuthToken{} = auth_token, attrs) do
-    auth_token
-    |> cast(attrs, [:jwt, :jti, :aud, :exp])
-    |> validate_required([:jwt, :jti, :aud, :exp])
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:jwt, :jti, :aud, :exp, :user_id])
+    |> validate_required([:jwt, :jti, :aud, :exp, :user_id])
   end
 end
