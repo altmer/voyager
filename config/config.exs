@@ -39,6 +39,12 @@ config :ex_aws,
     region: "eu-central-1"
   ]
 
+config :voyager, Voyager.Guardian,
+  issuer: "Voyager",
+  ttl: {3, :days},
+  verify_issuer: true,
+  secret_key: "${SECRET_KEY_BASE}"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -52,7 +52,8 @@ defmodule Voyager.Mixfile do
       {:faker, "~> 0.9", only: :test},
       {:ex_machina, "~> 2.1", only: :test},
       {:comeonin, "~> 4.0"},
-      {:bcrypt_elixir, "~> 1.0"}
+      {:bcrypt_elixir, "~> 1.0"},
+      {:guardian, "~> 1.0"}
     ]
   end
 

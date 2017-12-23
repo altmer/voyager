@@ -8,7 +8,7 @@ use Mix.Config
 # with brunch.io to recompile .js and .css sources.
 config :voyager, VoyagerWeb.Endpoint,
   http: [port: 4000],
-  secret_key_base: "svWE1TQ9lYke32lLUdE5jnV+EqI7nObwZ/rFYLH+s6BFRKU/prg559ADuLaohNx9",
+  secret_key_base: "svWE1TQ9lYke32lLUdE5jnV+EqI7nObwZ/rFYLH+s6BFRKU/prg559ADuLaohNx9_dev",
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -36,5 +36,8 @@ config :phoenix, :stacktrace_depth, 20
 config :voyager, Voyager.Repo,
   database: "voyager_dev",
   pool_size: 10
+
+config :voyager, Voyager.Guardian,
+  secret_key: "svWE1TQ9lYke32lLUdE5jnV+EqI7nObwZ/rFYLH+s6BFRKU/prg559ADuLaohNx9_dev"
 
 import_config "dev.secret.exs"
