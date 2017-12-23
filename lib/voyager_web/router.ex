@@ -1,12 +1,15 @@
 defmodule VoyagerWeb.Router do
   use VoyagerWeb, :router
 
-  pipeline :api do
+  forward "/api", Absinthe.Plug,
+    schema: VoyagerWeb.Schema
+
+  pipeline :json do
     plug :accepts, ["json"]
   end
 
   scope "/", VoyagerWeb do
-    pipe_through :api
+    pipe_through :json
 
     get "/", RootController, :index
   end

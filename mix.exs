@@ -54,7 +54,9 @@ defmodule Voyager.Mixfile do
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:guardian, "~> 1.0"},
-      {:bamboo, "~> 0.8"}
+      {:bamboo, "~> 0.8"},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"}
     ]
   end
 
