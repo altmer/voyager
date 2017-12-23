@@ -43,7 +43,19 @@ config :voyager, Voyager.Guardian,
   issuer: "Voyager",
   ttl: {3, :days},
   verify_issuer: true,
-  secret_key: "${SECRET_KEY_BASE}"
+  secret_key: "${SECRET_KEY_BASE}",
+  token_module: Guardian.Token.Jwt
+
+config :voyager, Voyager.Emails.Mailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: "${SMTP_DOMAIN}",
+  port: "${SMTP_PORT}",
+  username: "${SMTP_USERNAME}",
+  password: "${SMTP_PASSWORD}",
+  tls: :if_available,
+  ssl: false,
+  retries: 1,
+  from: "noreply@travel.hmstr.me"
 
 # Configures Elixir's Logger
 config :logger, :console,

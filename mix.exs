@@ -53,7 +53,8 @@ defmodule Voyager.Mixfile do
       {:ex_machina, "~> 2.1", only: :test},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:guardian, "~> 1.0"}
+      {:guardian, "~> 1.0"},
+      {:bamboo, "~> 0.8"}
     ]
   end
 

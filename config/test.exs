@@ -20,3 +20,6 @@ config :arc,
 
 config :voyager, Voyager.Guardian,
   secret_key: "svWE1TQ9lYke32lLUdE5jnV+EqI7nObwZ/rFYLH+s6BFRKU/prg559ADuLaohNx9_test"
+
+config :voyager, Voyager.Emails.Mailer,
+  adapter: Bamboo.TestAdapter
