@@ -26,7 +26,7 @@ defmodule Voyager.Accounts.Avatar do
   def filename(version, _), do: version
 
   def storage_dir(_, {_, scope}) do
-    folder = Base.encode16(:crypto.hash(:md5, Integer.to_string(scope.id)))
+    folder = Base.encode16(:crypto.hash(:md5, scope.id))
     "uploads/users/#{folder}/avatar"
   end
 
