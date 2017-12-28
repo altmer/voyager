@@ -15,6 +15,12 @@ defmodule VoyagerWeb.Schema.AccountTypes do
         {:ok, initials(user)}
       end
     end
+
+    field :color, :string do
+      resolve fn user, _, _ ->
+        {:ok, color(user)}
+      end
+    end
   end
 
   defp initials(user) do
@@ -24,5 +30,13 @@ defmodule VoyagerWeb.Schema.AccountTypes do
     |> Enum.take(2)
     |> Enum.join
     |> String.upcase
+  end
+
+  defp color(user) do
+    number = user.id
+             |> to_charlist
+             |> Enum.reduce(&+/2)
+             |> rem(4)
+    "user-color-#{number}"
   end
 end
