@@ -6,20 +6,16 @@ defmodule Voyager.Accounts.Users do
   alias Voyager.Repo
   alias Voyager.Accounts.User
 
+  def get(id), do: Repo.get(User, id)
   def get!(id), do: Repo.get!(User, id)
 
   def get_by_email(nil), do: nil
   def get_by_email(email), do: Repo.get_by(User, email: email)
 
   def add(user_params) do
-    params_with_default = Map.merge(user_params, %{locale: "en"})
-
-    Multi.new
-    |> Multi.insert(:user, User.changeset(%User{}, params_with_default))
-    |> Multi.run(:avatar, fn %{user: user} ->
-        upload_avatar(user, params_with_default)
-    end)
-    |> Repo.transaction
+    user_params
+    |> Map.merge(%{locale: "en"}) # default locale param
+    |> create_user()
   end
 
   def update_profile(user, user_params) do
@@ -56,5 +52,14 @@ defmodule Voyager.Accounts.Users do
     user
     |> User.update_locale(user_params)
     |> Repo.update
+  end
+
+  defp create_user(params) do
+    Multi.new
+    |> Multi.insert(:user, User.changeset(%User{}, params))
+    |> Multi.run(:avatar, fn %{user: user} ->
+        upload_avatar(user, params)
+      end)
+    |> Repo.transaction
   end
 end

@@ -53,5 +53,21 @@ defmodule VoyagerWeb.AccountsResolverTest do
       assert json["data"]["user"]["id"] == to_string(user.id)
       assert json["data"]["user"]["initials"] == "T"
     end
+
+    test "returns error if user is not found", %{conn: conn} do
+      query = """
+      {
+        user(id: "7D72616A-AF20-40FC-ADAA-179C85CFA638") {
+          id
+        }
+      }
+      """
+      res = conn
+            |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+
+      json = json_response(res, 200)
+      assert json["data"]["user"] == nil
+      assert [%{"message" => "not_found"} | _] = json["errors"]
+    end
   end
 end
