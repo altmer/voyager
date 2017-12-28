@@ -47,10 +47,10 @@ defmodule VoyagerWeb.AccountsResolverTest do
         }
       }
       """
-      res = conn
+      json = conn
             |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+            |> json_response(200)
 
-      json = json_response(res, 200)
       assert json["data"]["user"]["id"] == to_string(user.id)
       assert json["data"]["user"]["initials"] == "T"
     end
@@ -63,10 +63,10 @@ defmodule VoyagerWeb.AccountsResolverTest do
         }
       }
       """
-      res = conn
+      json = conn
             |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+            |> json_response(200)
 
-      json = json_response(res, 200)
       assert json["data"]["user"] == nil
       assert [%{"message" => "not_found"} | _] = json["errors"]
     end
@@ -94,11 +94,12 @@ defmodule VoyagerWeb.AccountsResolverTest do
           }
         }
       """
-      res = conn
+      json = conn
             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
 
       registered_user = Users.get_by_email("test12344322@mail.test")
-      json = json_response(res, 200)
+
       assert json["data"]["register"]["result"]["id"] == to_string(registered_user.id)
       assert json["data"]["register"]["successful"] == true
 
@@ -131,13 +132,9 @@ defmodule VoyagerWeb.AccountsResolverTest do
           }
         }
       """
-      res = conn
+      json = conn
             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-
-      registered_user = Users.get_by_email("test1234335552@mail.test")
-      assert registered_user == nil
-
-      json = json_response(res, 200)
+            |> json_response(200)
       assert json["data"]["register"]["result"]["id"] == nil
       assert json["data"]["register"]["successful"] == false
 
@@ -147,6 +144,9 @@ defmodule VoyagerWeb.AccountsResolverTest do
           "message" => "does not match confirmation"
         }
       | _] = json["data"]["register"]["messages"]
+
+      registered_user = Users.get_by_email("test1234335552@mail.test")
+      assert registered_user == nil
     end
   end
 end

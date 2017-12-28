@@ -3,6 +3,7 @@ defmodule VoyagerWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug VoyagerWeb.Plugs.Locale, "en"
   end
 
   scope "/" do
