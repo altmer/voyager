@@ -13,9 +13,10 @@ defmodule Voyager.Accounts.Users do
   def get_by_email(email), do: Repo.get_by(User, email: email)
 
   def add(user_params) do
-    user_params
-    |> Map.merge(%{locale: "en"}) # default locale param
+    %{locale: "en"} # default locale param
+    |> Map.merge(user_params)
     |> create_user()
+    |> transaction_result()
   end
 
   def update_profile(user, user_params) do
@@ -62,4 +63,9 @@ defmodule Voyager.Accounts.Users do
       end)
     |> Repo.transaction
   end
+
+  defp transaction_result({:ok, %{user: user}}),
+    do: {:ok, user}
+  defp transaction_result({:error, _entity, changeset, _changes_so_far}),
+    do: {:error, changeset}
 end

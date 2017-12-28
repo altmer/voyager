@@ -4,6 +4,7 @@ defmodule VoyagerWeb.AccountsResolverTest do
   import Voyager.Factory
 
   alias Voyager.AbsintheHelpers
+  alias Voyager.Accounts.{Sessions, Users}
 
   describe "&find_user/3" do
     test "returns user", %{conn: conn} do
@@ -68,6 +69,37 @@ defmodule VoyagerWeb.AccountsResolverTest do
       json = json_response(res, 200)
       assert json["data"]["user"] == nil
       assert [%{"message" => "not_found"} | _] = json["errors"]
+    end
+  end
+
+  describe "register/3" do
+    test "registers and returns user", %{conn: conn} do
+      mutation = """
+        mutation Register {
+          register(
+            name: "Test Testing",
+            email: "test12344322@mail.test",
+            password: "12345678",
+            passwordConfirmation:"12345678",
+            locale: "de"
+          ) {
+            id
+          }
+        }
+      """
+      res = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+
+      registered_user = Users.get_by_email("test12344322@mail.test")
+      json = json_response(res, 200)
+      assert json["data"]["register"]["id"] == to_string(registered_user.id)
+
+      assert "de" == registered_user.locale
+      assert "Test Testing" == registered_user.name
+      assert {:ok, _, _} = Sessions.authenticate(%{
+        "email" => "test12344322@mail.test",
+        "password" => "12345678"
+      })
     end
   end
 end
