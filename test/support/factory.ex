@@ -8,6 +8,7 @@ defmodule Voyager.Factory do
       name: Faker.Name.name,
       email: Faker.Internet.safe_email,
       encrypted_password: Comeonin.Bcrypt.hashpwsalt("12345678"),
+      locale: "en",
       home_town_id: "1234",
       currency: "EUR"
     }
