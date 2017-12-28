@@ -16,6 +16,8 @@ defmodule VoyagerWeb.Router do
     end
 
     forward "/api", Absinthe.Plug,
-      schema: VoyagerWeb.Schema
+      schema: VoyagerWeb.Schema,
+      analyze_complexity: true,
+      max_complexity: 200
   end
 end
