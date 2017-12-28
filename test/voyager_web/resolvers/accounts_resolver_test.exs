@@ -18,6 +18,7 @@ defmodule VoyagerWeb.AccountsResolverTest do
           currency
           initials
           color
+          avatar_thumb
         }
       }
       """
@@ -31,6 +32,7 @@ defmodule VoyagerWeb.AccountsResolverTest do
       assert json["data"]["user"]["currency"] == user.currency
       assert json["data"]["user"]["initials"] == "JD"
       assert json["data"]["user"]["color"] =~ ~r/user-color-[0-3]/
+      assert json["data"]["user"]["avatar_thumb"] == nil
     end
 
     test "correct initials when one word name", %{conn: conn} do

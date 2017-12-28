@@ -4,6 +4,8 @@ defmodule VoyagerWeb.Schema.AccountTypes do
   """
   use Absinthe.Schema.Notation
 
+  alias Voyager.Accounts.Avatar
+
   object :user do
     field :id, :id
     field :name, :string
@@ -19,6 +21,12 @@ defmodule VoyagerWeb.Schema.AccountTypes do
     field :color, :string do
       resolve fn user, _, _ ->
         {:ok, color(user)}
+      end
+    end
+
+    field :avatar_thumb, :string do
+      resolve fn user, _, _ ->
+        {:ok, Avatar.url({user.avatar, user}, :thumb)}
       end
     end
   end
