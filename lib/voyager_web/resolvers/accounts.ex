@@ -6,4 +6,7 @@ defmodule VoyagerWeb.Resolvers.Accounts do
 
   def find_user(_parent, %{id: id}, _resolution),
     do: {:ok, Users.get!(id)}
+
+  def register(_parent, args, _resolution),
+    do: Users.add(args)
 end

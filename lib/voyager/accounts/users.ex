@@ -12,7 +12,7 @@ defmodule Voyager.Accounts.Users do
   def get_by_email(email), do: Repo.get_by(User, email: email)
 
   def add(user_params) do
-    params_with_default = Map.merge(user_params, %{"locale" => "en"})
+    params_with_default = Map.merge(user_params, %{locale: "en"})
 
     Multi.new
     |> Multi.insert(:user, User.changeset(%User{}, params_with_default))

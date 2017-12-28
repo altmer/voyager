@@ -39,11 +39,11 @@ defmodule Voyager.UsersTest do
   describe "Users.add/1" do
     test "it create user with default locale if params are valid" do
       assert {:ok, %{user: user}} = Users.add(%{
-          "email" => "test@mail.test",
-          "password" => "12345678",
-          "password_confirmation" => "12345678",
-          "name" => "Ada Lovelace",
-          "locale" => "de"
+          email: "test@mail.test",
+          password: "12345678",
+          password_confirmation: "12345678",
+          name: "Ada Lovelace",
+          locale: "de"
         }
       )
 
@@ -53,10 +53,10 @@ defmodule Voyager.UsersTest do
 
     test "it returns validation error if params are invalid" do
       assert {:error, _, _, _} = Users.add(%{
-          "password" => "12345678",
-          "password_confirmation" => "12345678",
-          "name" => "Ada Lovelace",
-          "locale" => "de"
+          password: "12345678",
+          password_confirmation: "12345678",
+          name: "Ada Lovelace",
+          locale: "de"
         }
       )
     end
