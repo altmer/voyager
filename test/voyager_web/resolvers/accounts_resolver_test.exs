@@ -83,7 +83,14 @@ defmodule VoyagerWeb.AccountsResolverTest do
             passwordConfirmation:"12345678",
             locale: "de"
           ) {
-            id
+            result {
+              id
+            }
+            successful
+            messages {
+              field
+              message
+            }
           }
         }
       """
@@ -92,7 +99,8 @@ defmodule VoyagerWeb.AccountsResolverTest do
 
       registered_user = Users.get_by_email("test12344322@mail.test")
       json = json_response(res, 200)
-      assert json["data"]["register"]["id"] == to_string(registered_user.id)
+      assert json["data"]["register"]["result"]["id"] == to_string(registered_user.id)
+      assert json["data"]["register"]["successful"] == true
 
       assert "de" == registered_user.locale
       assert "Test Testing" == registered_user.name
@@ -100,6 +108,45 @@ defmodule VoyagerWeb.AccountsResolverTest do
         "email" => "test12344322@mail.test",
         "password" => "12345678"
       })
+    end
+
+    test "returns errors when input is invalid", %{conn: conn} do
+      mutation = """
+        mutation Register {
+          register(
+            name: "Test Testing",
+            email: "test1234335552@mail.test",
+            password: "12345678",
+            passwordConfirmation:"123456789",
+            locale: "de"
+          ) {
+            result {
+              id
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      res = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+
+      registered_user = Users.get_by_email("test1234335552@mail.test")
+      assert registered_user == nil
+
+      json = json_response(res, 200)
+      assert json["data"]["register"]["result"]["id"] == nil
+      assert json["data"]["register"]["successful"] == false
+
+      assert [
+        %{
+          "field" => "passwordConfirmation",
+          "message" => "does not match confirmation"
+        }
+      | _] = json["data"]["register"]["messages"]
     end
   end
 end

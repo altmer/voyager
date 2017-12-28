@@ -3,8 +3,13 @@ defmodule VoyagerWeb.Resolvers do
   Common functions for graphql resolvers
   """
 
-  def find_result(nil),
+  def single_query_result(nil),
     do: {:error, :not_found}
-  def find_result(result),
+  def single_query_result(result),
     do: {:ok, result}
+
+  def mutation_result({:ok, result}),
+    do: {:ok, result}
+  def mutation_result({:error, %Ecto.Changeset{} = changeset}),
+    do: {:ok, changeset}
 end

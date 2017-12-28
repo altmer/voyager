@@ -56,7 +56,9 @@ defmodule Voyager.Mixfile do
       {:guardian, "~> 1.0"},
       {:bamboo, "~> 0.8"},
       {:absinthe, "~> 1.4"},
-      {:absinthe_plug, "~> 1.4"}
+      {:absinthe_plug, "~> 1.4"},
+      {:kronky, "~> 0.4.0"},
+      {:timex, "~> 3.1"}
     ]
   end
 
