@@ -3,7 +3,10 @@ defmodule VoyagerWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource, allow_blank: true
     plug VoyagerWeb.Plugs.Locale, "en"
+    plug VoyagerWeb.Plugs.Context
   end
 
   scope "/" do

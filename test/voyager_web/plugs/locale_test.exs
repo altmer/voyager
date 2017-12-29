@@ -6,10 +6,10 @@ defmodule VoyagerWeb.LocaleTest do
       assert "en" = Gettext.get_locale(VoyagerWeb.Gettext)
 
       conn
-      |> put_req_header("x-locale", "de")
-      |> VoyagerWeb.Plugs.Locale.call("ru")
+      |> put_req_header("x-locale", "ru")
+      |> VoyagerWeb.Plugs.Locale.call("en")
 
-      assert "de" = Gettext.get_locale(VoyagerWeb.Gettext)
+      assert "ru" = Gettext.get_locale(VoyagerWeb.Gettext)
     end
 
     test "sets default if locale is invalid", %{conn: conn} do

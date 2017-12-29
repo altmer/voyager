@@ -2,9 +2,10 @@ defmodule VoyagerWeb.Plugs.Locale do
   @moduledoc """
   Sets current Gettext locale based on x-locale header sent from API clients.
   """
+  @behaviour Plug
   import Plug.Conn
 
-  @locales ["en", "ru", "de"]
+  @locales ["en", "ru"]
 
   def init(default), do: default
 
