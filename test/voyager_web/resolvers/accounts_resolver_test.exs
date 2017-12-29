@@ -148,5 +148,40 @@ defmodule VoyagerWeb.AccountsResolverTest do
       registered_user = Users.get_by_email("test1234335552@mail.test")
       assert registered_user == nil
     end
+
+    test "returns errors in requested locale", %{conn: conn} do
+      mutation = """
+        mutation Register {
+          register(
+            name: "Test Testing",
+            email: "test1234335552@mail.test",
+            password: "12345678",
+            passwordConfirmation:"123456789",
+            locale: "ru"
+          ) {
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      json = conn
+            |> put_req_header("x-locale", "ru")
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
+      assert json["data"]["register"]["successful"] == false
+
+      assert [
+        %{
+          "field" => "passwordConfirmation",
+          "message" => "не совпадает с подтверждением"
+        }
+      | _] = json["data"]["register"]["messages"]
+
+      registered_user = Users.get_by_email("test1234335552@mail.test")
+      assert registered_user == nil
+    end
   end
 end

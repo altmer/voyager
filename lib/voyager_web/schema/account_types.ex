@@ -53,7 +53,6 @@ defmodule VoyagerWeb.Schema.AccountTypes do
       arg :locale, :string
 
       resolve &Accounts.register/3
-      middleware &build_payload/2
     end
   end
 
