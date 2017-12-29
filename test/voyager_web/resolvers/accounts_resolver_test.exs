@@ -106,8 +106,8 @@ defmodule VoyagerWeb.AccountsResolverTest do
       assert "de" == registered_user.locale
       assert "Test Testing" == registered_user.name
       assert {:ok, _, _} = Sessions.authenticate(%{
-        "email" => "test12344322@mail.test",
-        "password" => "12345678"
+        email: "test12344322@mail.test",
+        password: "12345678"
       })
     end
 

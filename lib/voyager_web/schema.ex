@@ -5,6 +5,7 @@ defmodule VoyagerWeb.Schema do
   use Absinthe.Schema
 
   import_types VoyagerWeb.Schema.AccountTypes
+  import_types VoyagerWeb.Schema.SessionTypes
 
   query do
     import_fields :accounts_queries
@@ -12,5 +13,6 @@ defmodule VoyagerWeb.Schema do
 
   mutation do
     import_fields :accounts_mutations
+    import_fields :sessions_mutations
   end
 end

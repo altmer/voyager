@@ -9,11 +9,11 @@ defmodule Voyager.Accounts.Sessions do
   alias Voyager.Accounts.User
   alias Comeonin.Bcrypt
 
-  def authenticate(%{"email" => nil}),
+  def authenticate(%{email: nil}),
     do: @auth_failed
-  def authenticate(%{"email" => ""}),
+  def authenticate(%{email: ""}),
     do: @auth_failed
-  def authenticate(%{"email" => email, "password" => password}) do
+  def authenticate(%{email: email, password: password}) do
     with user <- Repo.get_by(User, email: String.downcase(email)),
          true <- check_password(user, password) do
       gen_token(user)

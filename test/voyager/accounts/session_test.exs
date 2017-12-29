@@ -10,36 +10,36 @@ defmodule Voyager.SessionsTest do
   describe "Sessions.authenticate/1" do
     test "it returns failed auth when given email is nil" do
       assert {:error, :auth_failed} = Sessions.authenticate(%{
-        "email" => nil,
-        "password" => "1232"
+        email: nil,
+        password: "1232"
       })
     end
 
     test "it returns failed auth when given email is empty" do
       assert {:error, :auth_failed} = Sessions.authenticate(%{
-        "email" => "",
-        "password" => "1232"}
+        email: "",
+        password: "1232"}
       )
     end
 
     test "it returns failed auth when there is no user with given email" do
       insert(:user)
       assert {:error, :auth_failed} = Sessions.authenticate(
-        %{"email" => "some@email.com", "password" => "12345678"}
+        %{email: "some@email.com", password: "12345678"}
       )
     end
 
     test "it returns failed auth when password is incorrect" do
       user = insert(:user)
       assert {:error, :auth_failed} = Sessions.authenticate(
-        %{"email" => user.email, "password" => "123456789"}
+        %{email: user.email, password: "123456789"}
       )
     end
 
     test "it returns ok with user and token when auth succeeded" do
       user = insert(:user)
       assert {:ok, auth_user, jwt} = Sessions.authenticate(
-        %{"email" => user.email, "password" => "12345678"}
+        %{email: user.email, password: "12345678"}
       )
 
       assert auth_user.id == user.id
