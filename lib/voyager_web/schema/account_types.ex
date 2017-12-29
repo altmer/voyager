@@ -63,6 +63,12 @@ defmodule VoyagerWeb.Schema.AccountTypes do
 
       resolve &Accounts.update_profile/3
     end
+
+    field :update_locale, type: :user_payload, description: "Updates current user's locale" do
+      arg :locale, non_null(:string)
+
+      resolve &Accounts.update_locale/3
+    end
   end
 
   defp initials(user) do
