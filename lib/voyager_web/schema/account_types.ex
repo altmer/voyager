@@ -15,6 +15,7 @@ defmodule VoyagerWeb.Schema.AccountTypes do
     field :name, :string
     field :locale, :string
     field :currency, :string
+    field :home_town_id, :string
 
     field :initials, :string do
       resolve fn user, _, _ ->

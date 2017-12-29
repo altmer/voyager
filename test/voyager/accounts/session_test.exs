@@ -49,7 +49,7 @@ defmodule Voyager.SessionsTest do
         {claims, _}
       } = Guardian.decode_and_verify(jwt)
 
-      assert {:ok, token_user} = Guardian.resource_from_claims(claims)
+      assert {:ok, token_user} = Guardian.resource_from_claims({claims, jwt})
       assert token_user.id == user.id
     end
   end

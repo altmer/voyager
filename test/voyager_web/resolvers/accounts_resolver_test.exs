@@ -184,4 +184,105 @@ defmodule VoyagerWeb.AccountsResolverTest do
       assert registered_user == nil
     end
   end
+
+  describe "&update_profile/3" do
+    @tag :login
+    test "updates user profile", %{conn: conn, logged_user: logged_user} do
+      mutation = """
+        mutation UpdateProfile {
+          updateProfile(
+            name: "New Name",
+            homeTownId: "town_id",
+            currency: "RUB"
+          ) {
+            result {
+              id
+              name
+              currency
+              homeTownId
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      json = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
+
+      assert json["data"]["updateProfile"]["successful"] == true
+
+      assert json["data"]["updateProfile"]["result"]["id"] == logged_user.id
+      assert json["data"]["updateProfile"]["result"]["name"] == "New Name"
+      assert json["data"]["updateProfile"]["result"]["currency"] == "RUB"
+      assert json["data"]["updateProfile"]["result"]["homeTownId"] == "town_id"
+
+      updated_user = Users.get!(logged_user.id)
+      assert "New Name" == updated_user.name
+      assert "RUB" == updated_user.currency
+      assert "town_id" == updated_user.home_town_id
+    end
+
+    @tag :login
+    test "returns validation errors", %{conn: conn, logged_user: logged_user} do
+      mutation = """
+        mutation UpdateProfile {
+          updateProfile(
+            name: ""
+          ) {
+            result {
+              id
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      json = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
+
+      assert json["data"]["updateProfile"]["successful"] == false
+
+      assert [
+        %{
+          "field" => "name",
+          "message" => "can't be blank"
+        }
+      | _] = json["data"]["updateProfile"]["messages"]
+
+      updated_user = Users.get!(logged_user.id)
+      assert "" != updated_user.name
+    end
+
+    test "returns not_authorized when no token provided", %{conn: conn} do
+      mutation = """
+        mutation UpdateProfile {
+          updateProfile(
+            name: "New Name",
+          ) {
+            result {
+              id
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      json = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
+
+      assert [%{"message" => "not_authorized"} | _] = json["errors"]
+    end
+  end
 end

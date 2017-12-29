@@ -19,7 +19,7 @@ defmodule VoyagerWeb.Resolvers do
     do: {:ok, changeset |> extract_messages() |> Payload.error_payload()}
 
   def not_authorized(),
-    do: {:error, "Not Authorized"}
+    do: {:error, "not_authorized"}
 
   defp extract_messages(changeset) do
     changeset

@@ -26,13 +26,19 @@ defmodule VoyagerWeb.ConnCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Voyager.Repo)
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Voyager.Repo, {:shared, self()})
     end
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn = Phoenix.ConnTest.build_conn()
+    cond do
+      tags[:login] ->
+        user = Voyager.Factory.insert(:user)
+        signed_conn = conn |> Plug.Conn.put_private(:absinthe, %{context: %{current_user: user}})
+        {:ok, conn: signed_conn, logged_user: user}
+      true ->
+        {:ok, conn: conn}
+    end
   end
-
 end

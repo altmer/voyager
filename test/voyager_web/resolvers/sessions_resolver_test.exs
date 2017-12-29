@@ -31,7 +31,7 @@ defmodule VoyagerWeb.SessionsResolverTest do
         {claims, _}
       } = Guardian.decode_and_verify(token)
 
-      assert {:ok, token_user} = Guardian.resource_from_claims(claims)
+      assert {:ok, token_user} = Guardian.resource_from_claims({claims, token})
       assert token_user.id == user.id
     end
 

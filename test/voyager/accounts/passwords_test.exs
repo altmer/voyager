@@ -54,7 +54,7 @@ defmodule Voyager.PasswordsTest do
 
       assert jti == jti_returned
       assert exp == iat + 60 * 60 # token expires in 1 hour
-      assert {:ok, authorized_user} = Guardian.resource_from_claims(claims)
+      assert {:ok, authorized_user} = Guardian.resource_from_claims({claims, jwt})
       assert user.id == authorized_user.id
     end
   end
