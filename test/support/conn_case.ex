@@ -35,7 +35,9 @@ defmodule VoyagerWeb.ConnCase do
     cond do
       tags[:login] ->
         user = Voyager.Factory.insert(:user)
-        signed_conn = conn |> Plug.Conn.put_private(:absinthe, %{context: %{current_user: user}})
+        signed_conn = conn
+                      |>Plug.Conn.put_private(:absinthe, %{context: %{current_user: user}})
+                      |>Voyager.Guardian.Plug.sign_in(user)
         {:ok, conn: signed_conn, logged_user: user}
       true ->
         {:ok, conn: conn}

@@ -15,6 +15,7 @@ defmodule VoyagerWeb.Router do
     pipe_through :api
 
     get "/", VoyagerWeb.RootController, :index
+    put "/upload_avatar", VoyagerWeb.UserController, :upload_avatar
 
     if Mix.env == :dev do
       forward "/graphiql", Absinthe.Plug.GraphiQL,

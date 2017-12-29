@@ -25,6 +25,8 @@ defmodule Voyager.Accounts.Users do
     |> Repo.update
   end
 
+  def upload_avatar(nil, _),
+    do: {:error, :not_found}
   def upload_avatar(user, user_params) do
     user
     |> User.upload_avatar(user_params)
