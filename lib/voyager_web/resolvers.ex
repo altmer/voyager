@@ -18,6 +18,9 @@ defmodule VoyagerWeb.Resolvers do
   def mutation_result({:error, %Ecto.Changeset{} = changeset}),
     do: {:ok, changeset |> extract_messages() |> Payload.error_payload()}
 
+  def not_authorized(),
+    do: {:error, "Not Authorized"}
+
   defp extract_messages(changeset) do
     changeset
     |> Changeset.traverse_errors(&construct_traversed_message/3)

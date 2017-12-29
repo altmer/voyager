@@ -54,6 +54,14 @@ defmodule VoyagerWeb.Schema.AccountTypes do
 
       resolve &Accounts.register/3
     end
+
+    field :update_profile, type: :user_payload, description: "Updates current user's profile" do
+      arg :name, :string
+      arg :home_town_id, :string
+      arg :currency, :string
+
+      resolve &Accounts.update_profile/3
+    end
   end
 
   defp initials(user) do

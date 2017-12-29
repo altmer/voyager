@@ -10,4 +10,11 @@ defmodule VoyagerWeb.Resolvers.Accounts do
 
   def register(_parent, args, _resolution),
     do: args |> Users.add() |> Resolvers.mutation_result()
+
+  def update_profile(_parent, args, %{context: %{current_user: current_user}}),
+    do: current_user
+        |> Users.update_profile(args)
+        |> Resolvers.mutation_result()
+  def update_profile(_parent, _args, _resolution),
+    do: Resolvers.not_authorized()
 end
