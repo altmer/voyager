@@ -24,4 +24,11 @@ defmodule VoyagerWeb.Resolvers.Users do
         |> Resolvers.mutation_result()
   def update_locale(_parent, _args, _resolution),
     do: Resolvers.not_authorized()
+
+  def update_password(_parent, args, %{context: %{current_user: current_user}}),
+    do: current_user
+        |> VoyagerUsers.update_password(args)
+        |> Resolvers.mutation_result()
+  def update_password(_parent, _args, _resolution),
+    do: Resolvers.not_authorized()
 end

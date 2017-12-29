@@ -319,4 +319,77 @@ defmodule VoyagerWeb.UsersResolverTest do
       assert "ru" == updated_user.locale
     end
   end
+
+  describe "&update_password/3" do
+    @tag :login
+    test "updates user password", %{conn: conn, logged_user: logged_user} do
+      mutation = """
+        mutation UpdateLocale {
+          updatePassword(
+            oldPassword: "12345678",
+            password: "test1234",
+            passwordConfirmation: "test1234"
+          ) {
+            result {
+              id
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      json = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
+
+      assert json["data"]["updatePassword"]["successful"] == true
+      assert json["data"]["updatePassword"]["result"]["id"] == logged_user.id
+
+      assert {:ok, _, _} = Sessions.authenticate(%{
+        email: logged_user.email,
+        password: "test1234"
+      })
+    end
+
+    @tag :login
+    test "validates data correctness", %{conn: conn, logged_user: logged_user} do
+      mutation = """
+        mutation UpdateLocale {
+          updatePassword(
+            oldPassword: "123456789",
+            password: "test1234",
+            passwordConfirmation: "test1234"
+          ) {
+            result {
+              id
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+      json = conn
+            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+            |> json_response(200)
+
+      assert json["data"]["updatePassword"]["successful"] == false
+      assert [
+        %{
+          "field" => "oldPassword",
+          "message" => "is invalid"
+        }
+      | _] = json["data"]["updatePassword"]["messages"]
+
+      assert {:ok, _, _} = Sessions.authenticate(%{
+        email: logged_user.email,
+        password: "12345678"
+      })
+    end
+  end
 end

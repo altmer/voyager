@@ -69,6 +69,14 @@ defmodule VoyagerWeb.Schema.UsersTypes do
 
       resolve &Users.update_locale/3
     end
+
+    field :update_password, type: :user_payload, description: "Changes user's password" do
+      arg :old_password, non_null(:string)
+      arg :password, non_null(:string)
+      arg :password_confirmation, non_null(:string)
+
+      resolve &Users.update_password/3
+    end
   end
 
   defp initials(user) do
