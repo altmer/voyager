@@ -4,8 +4,8 @@ defmodule VoyagerWeb.Schema do
   """
   use Absinthe.Schema
 
-  import_types VoyagerWeb.Schema.AccountTypes
-  import_types VoyagerWeb.Schema.SessionTypes
+  import_types VoyagerWeb.Schema.UsersTypes
+  import_types VoyagerWeb.Schema.SessionsTypes
 
   query do
     import_fields :accounts_queries

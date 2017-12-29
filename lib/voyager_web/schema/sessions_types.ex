@@ -1,4 +1,4 @@
-defmodule VoyagerWeb.Schema.SessionTypes do
+defmodule VoyagerWeb.Schema.SessionsTypes do
   @moduledoc """
   Graphql definitions for sessions and logins
   """

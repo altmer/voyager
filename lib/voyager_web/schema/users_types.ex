@@ -1,4 +1,4 @@
-defmodule VoyagerWeb.Schema.AccountTypes do
+defmodule VoyagerWeb.Schema.UsersTypes do
   @moduledoc """
   GraphQL objects for user accounts
   """
@@ -8,7 +8,7 @@ defmodule VoyagerWeb.Schema.AccountTypes do
   import_types Kronky.ValidationMessageTypes
 
   alias Voyager.Accounts.Avatar
-  alias VoyagerWeb.Resolvers.Accounts
+  alias VoyagerWeb.Resolvers.Users
 
   object :user do
     field :id, :id
@@ -39,7 +39,7 @@ defmodule VoyagerWeb.Schema.AccountTypes do
   object :accounts_queries do
     field :user, type: :user, description: "Get a user of the app (for user profile page f.ex.)" do
       arg :id, non_null(:id)
-      resolve &Accounts.find_user/3
+      resolve &Users.find_user/3
     end
   end
 
@@ -53,7 +53,7 @@ defmodule VoyagerWeb.Schema.AccountTypes do
       arg :password_confirmation, non_null(:string)
       arg :locale, :string
 
-      resolve &Accounts.register/3
+      resolve &Users.register/3
     end
 
     field :update_profile, type: :user_payload, description: "Updates current user's profile" do
@@ -61,13 +61,13 @@ defmodule VoyagerWeb.Schema.AccountTypes do
       arg :home_town_id, :string
       arg :currency, :string
 
-      resolve &Accounts.update_profile/3
+      resolve &Users.update_profile/3
     end
 
     field :update_locale, type: :user_payload, description: "Updates current user's locale" do
       arg :locale, non_null(:string)
 
-      resolve &Accounts.update_locale/3
+      resolve &Users.update_locale/3
     end
   end
 

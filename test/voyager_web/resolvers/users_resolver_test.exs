@@ -1,4 +1,4 @@
-defmodule VoyagerWeb.AccountsResolverTest do
+defmodule VoyagerWeb.UsersResolverTest do
   use VoyagerWeb.ConnCase
 
   import Voyager.Factory
