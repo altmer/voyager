@@ -58,7 +58,10 @@ defmodule Voyager.Mixfile do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:kronky, "~> 0.4.0"},
-      {:timex, "~> 3.1"}
+      {:timex, "~> 3.1"},
+      {:ueberauth, "~> 0.4"},
+      {:ueberauth_google, "~> 0.7"},
+      {:secure_random, "~> 0.5"}
     ]
   end
 

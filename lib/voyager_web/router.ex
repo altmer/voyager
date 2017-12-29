@@ -1,6 +1,14 @@
 defmodule VoyagerWeb.Router do
   use VoyagerWeb, :router
 
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
     plug Guardian.Plug.Pipeline, module: Voyager.Guardian,
@@ -26,5 +34,11 @@ defmodule VoyagerWeb.Router do
       schema: VoyagerWeb.Schema,
       analyze_complexity: true,
       max_complexity: 200
+  end
+
+  # these paths are for oauth only - überauth works with browser pipeline
+  scope "/auth", VoyagerWeb do
+    get "/:provider", OmniauthController, :request
+    get "/:provider/callback", OmniauthController, :callback
   end
 end
