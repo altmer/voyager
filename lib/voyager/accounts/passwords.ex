@@ -59,9 +59,9 @@ defmodule Voyager.Accounts.Passwords do
       {:ok, _} = Guardian.revoke(jwt)
       {:ok, user}
     else
-      false -> {:error, :auth, :invalid_token}
-      {:error, %Ecto.Changeset{} = changeset} -> {:error, :changeset, changeset}
-      {:error, reason} -> {:error, :auth, reason}
+      false -> {:error, :invalid_token}
+      {:error, %Ecto.Changeset{} = changeset} -> {:error, changeset}
+      {:error, reason} -> {:error, reason}
     end
   end
 end

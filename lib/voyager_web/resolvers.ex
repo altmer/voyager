@@ -17,6 +17,8 @@ defmodule VoyagerWeb.Resolvers do
     do: {:ok, Payload.success_payload(result)}
   def mutation_result({:error, %Ecto.Changeset{} = changeset}),
     do: {:ok, changeset |> extract_messages() |> Payload.error_payload()}
+  def mutation_result({:error, _} = error_tuple),
+    do: error_tuple
 
   def not_authorized,
     do: {:error, "not_authorized"}

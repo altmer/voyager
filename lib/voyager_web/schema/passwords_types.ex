@@ -18,5 +18,15 @@ defmodule VoyagerWeb.Schema.PasswordsTypes do
 
       resolve &Passwords.forgot_password/3
     end
+
+    field :reset_password,
+          type: :user_payload,
+          description: "Resets user's password using token from email" do
+      arg :password_reset_token, non_null(:string)
+      arg :password, non_null(:string)
+      arg :password_confirmation, non_null(:string)
+
+      resolve &Passwords.reset_password/3
+    end
   end
 end

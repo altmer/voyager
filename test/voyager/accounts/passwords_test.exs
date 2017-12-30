@@ -102,7 +102,7 @@ defmodule Voyager.PasswordsTest do
     }
 
     test "returns auth error on invalid token" do
-      assert {:error, :auth, %CaseClauseError{}} = Passwords.reset_password(
+      assert {:error, %CaseClauseError{}} = Passwords.reset_password(
         "not a token", @valid_password_params
       )
     end
@@ -110,7 +110,7 @@ defmodule Voyager.PasswordsTest do
     test "returns auth error on expired token" do
       user = insert(:user)
       {:ok, jwt, _} = Guardian.encode_and_sign(user, %{}, ttl: {-1, :hours})
-      assert {:error, :auth, :token_expired} = Passwords.reset_password(
+      assert {:error, :token_expired} = Passwords.reset_password(
         jwt, @valid_password_params
       )
       user = Repo.get(User, user.id)
@@ -122,7 +122,7 @@ defmodule Voyager.PasswordsTest do
       {:ok, jwt, _} = Guardian.encode_and_sign(user, %{}, ttl: {1, :hours})
       Repo.delete_all(AuthToken)
       Repo.delete!(user)
-      assert {:error, :auth, :token_not_found} = Passwords.reset_password(
+      assert {:error, :token_not_found} = Passwords.reset_password(
         jwt, @valid_password_params
       )
     end
@@ -135,7 +135,7 @@ defmodule Voyager.PasswordsTest do
         user, %{}, ttl: {1, :hours}
       )
 
-      assert {:error, :auth, :invalid_token} = Passwords.reset_password(
+      assert {:error, :invalid_token} = Passwords.reset_password(
         jwt, @valid_password_params
       )
 
@@ -150,7 +150,7 @@ defmodule Voyager.PasswordsTest do
       } = Guardian.encode_and_sign(user, %{}, ttl: {1, :hours})
       {:ok, user} = Users.set_reset_token(user, jti)
 
-      assert {:error, :changeset, changeset} = Passwords.reset_password(
+      assert {:error, %Ecto.Changeset{} = changeset} = Passwords.reset_password(
         jwt, @wrong_password_confirmation
       )
 
