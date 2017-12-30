@@ -61,7 +61,8 @@ defmodule Voyager.Mixfile do
       {:timex, "~> 3.1"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.7"},
-      {:secure_random, "~> 0.5"}
+      {:secure_random, "~> 0.5"},
+      {:bamboo_smtp, "~> 1.4.0", only: :dev}
     ]
   end
 

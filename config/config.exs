@@ -47,14 +47,9 @@ config :voyager, Voyager.Guardian,
   token_module: Guardian.Token.Jwt
 
 config :voyager, Voyager.Emails.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: "${SMTP_DOMAIN}",
-  port: "${SMTP_PORT}",
-  username: "${SMTP_USERNAME}",
-  password: "${SMTP_PASSWORD}",
-  tls: :if_available,
-  ssl: false,
-  retries: 1,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "${MAILGUN_API_KEY}",
+  domain: "${MAILGUN_DOMAIN}",
   from: "noreply@travel.hmstr.me"
 
 # Configures Elixir's Logger
