@@ -66,6 +66,11 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: "${GOOGLE_CLIENT_ID}",
   client_secret: "${GOOGLE_CLIENT_SECRET}"
 
+config :sentry,
+  filter: Voyager.SentryEventFilter,
+  environment_name: :dev,
+  included_environments: [:prod]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
