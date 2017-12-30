@@ -8,11 +8,12 @@ defmodule VoyagerWeb.Schema do
   import_types VoyagerWeb.Schema.SessionsTypes
 
   query do
-    import_fields :accounts_queries
+    import_fields :users_queries
+    import_fields :sessions_queries
   end
 
   mutation do
-    import_fields :accounts_mutations
+    import_fields :users_mutations
     import_fields :sessions_mutations
   end
 end

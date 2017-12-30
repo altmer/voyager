@@ -95,4 +95,42 @@ defmodule VoyagerWeb.SessionsResolverTest do
       assert [%{"message" => "not_authorized"} | _] = json["errors"]
     end
   end
+
+  describe "&current_user/3" do
+    @tag :login
+    test "returns current user", %{conn: conn, logged_user: user} do
+      query = """
+      {
+        currentUser {
+          id
+          name
+        }
+      }
+      """
+
+      json = conn
+             |> post("/api", AbsintheHelpers.query_skeleton(query, "CurrentUser"))
+             |> json_response(200)
+
+      assert json["data"]["currentUser"]["id"] == to_string(user.id)
+      assert json["data"]["currentUser"]["name"] == user.name
+    end
+
+    test "returns error when not logged in", %{conn: conn} do
+      query = """
+      {
+        currentUser {
+          id
+          name
+        }
+      }
+      """
+
+      json = conn
+             |> post("/api", AbsintheHelpers.query_skeleton(query, "CurrentUser"))
+             |> json_response(200)
+
+      assert [%{"message" => "not_authorized"} | _] = json["errors"]
+    end
+  end
 end

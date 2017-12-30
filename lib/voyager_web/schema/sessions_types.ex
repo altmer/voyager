@@ -15,6 +15,12 @@ defmodule VoyagerWeb.Schema.SessionsTypes do
     field :successful, :boolean
   end
 
+  object :sessions_queries do
+    field :current_user, type: :user, description: "returns currently signed in user" do
+      resolve &Sessions.current_user/3
+    end
+  end
+
   object :sessions_mutations do
     field :login, type: :session, description: "authentication attempt" do
       arg :email, non_null(:string)

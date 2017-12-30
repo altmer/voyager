@@ -23,10 +23,10 @@ defmodule VoyagerWeb.UsersResolverTest do
         }
       }
       """
-      res = conn
+      json = conn
             |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+            |> json_response(200)
 
-      json = json_response(res, 200)
       assert json["data"]["user"]["id"] == to_string(user.id)
       assert json["data"]["user"]["name"] == user.name
       assert json["data"]["user"]["locale"] == user.locale

@@ -36,7 +36,7 @@ defmodule VoyagerWeb.Schema.UsersTypes do
     end
   end
 
-  object :accounts_queries do
+  object :users_queries do
     field :user, type: :user, description: "Get a user of the app (for user profile page f.ex.)" do
       arg :id, non_null(:id)
       resolve &Users.find_user/3
@@ -45,7 +45,7 @@ defmodule VoyagerWeb.Schema.UsersTypes do
 
   payload_object(:user_payload, :user)
 
-  object :accounts_mutations do
+  object :users_mutations do
     field :register, type: :user_payload, description: "Register new user" do
       arg :name, non_null(:string)
       arg :email, non_null(:string)
