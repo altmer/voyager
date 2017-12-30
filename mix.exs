@@ -63,7 +63,8 @@ defmodule Voyager.Mixfile do
       {:ueberauth_google, "~> 0.7"},
       {:secure_random, "~> 0.5"},
       {:bamboo_smtp, "~> 1.4.0", only: :dev},
-      {:sentry, "~> 6.0.4"}
+      {:sentry, "~> 6.0.4"},
+      {:distillery, "~> 1.5", runtime: false}
     ]
   end
 

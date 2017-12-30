@@ -4,3 +4,23 @@ services:
     image: postgres:10.1
     ports:
       - '25432:5432'
+  app:
+    image: altmer/voyager:latest
+    links:
+      - db
+    ports:
+      - '24000:4000'
+    environment:
+      HOST: localhost
+      PORT: 4000
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      SECRET_KEY_BASE: wRypStkW9MjmcNvlI4Roc/+6bdrNQhG+1YF/rhrwSTFwqR+BTYqe4I+YvVEbviyR
+      AWS_S3_BUCKET: bucket
+      AWS_S3_KEY: s3_key
+      AWS_S3_SECRET: s3_secret
+      MAILGUN_API_KEY: sosecret
+      MAILGUN_DOMAIN: voyager.com
+      GOOGLE_CLIENT_ID: googleid
+      GOOGLE_CLIENT_SECRET: imsosecret
+      SENTRY_DSN: sentry_dsn

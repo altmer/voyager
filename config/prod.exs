@@ -16,8 +16,8 @@ use Mix.Config
 config :voyager, VoyagerWeb.Endpoint,
   http: [port: "${PORT}"],
   url: [host: "${HOST}", port: 80],
-  load_from_system_env: true,
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  server: true,
+  root: "."
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -28,6 +28,7 @@ config :voyager, Voyager.Repo,
   password: "${POSTGRES_PASSWORD}",
   database: "voyager_production",
   hostname: "${POSTGRES_HOST}",
+  port: 5432,
   pool_size: 15
 
 config :sentry,

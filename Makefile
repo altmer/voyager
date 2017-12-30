@@ -2,9 +2,7 @@ help:
 	@echo "Voyager project"
 	@echo "-------------------------------------------------"
 	@echo ""
-	@echo "-start builds and starts docker stack locally"
-	@echo "-stop stops docker stack"
-start:
-	docker-compose up -d
-stop:
-	docker-compose stop
+	@echo "-build builds and pushes docker distribution to docker hub"
+build:
+	docker build -f Dockerfile -t altmer/voyager:latest .
+	docker push altmer/voyager
