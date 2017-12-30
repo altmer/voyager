@@ -5,15 +5,22 @@ defmodule VoyagerWeb.Plugs.Context do
   @behaviour Plug
 
   import Plug.Conn
-  alias Voyager.Guardian.Plug
+  alias Voyager.Guardian.Plug, as: GuardianPlug
 
   def init(opts), do: opts
 
   def call(conn, _),
-    do: conn_with_resource(conn, Plug.current_resource(conn))
+    do: conn_with_resource(
+      conn,
+      GuardianPlug.current_resource(conn),
+      GuardianPlug.current_token(conn),
+      GuardianPlug.current_claims(conn)
+    )
 
-  defp conn_with_resource(conn, nil),
+  defp conn_with_resource(conn, nil, _, _),
     do: conn
-  defp conn_with_resource(conn, user),
-    do: put_private(conn, :absinthe, %{context: %{current_user: user}})
+  defp conn_with_resource(conn, user, token, claims),
+    do: put_private(conn, :absinthe, %{
+      context: %{current_user: user, token: token, claims: claims}
+    })
 end

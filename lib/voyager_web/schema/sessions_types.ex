@@ -11,12 +11,20 @@ defmodule VoyagerWeb.Schema.SessionsTypes do
     field :token, :string
   end
 
+  object :session_destroy do
+    field :successful, :boolean
+  end
+
   object :sessions_mutations do
     field :login, type: :session, description: "authentication attempt" do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
 
       resolve &Sessions.login/3
+    end
+
+    field :logout, type: :session_destroy, description: "session invalidation" do
+      resolve &Sessions.logout/3
     end
   end
 end

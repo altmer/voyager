@@ -56,4 +56,43 @@ defmodule VoyagerWeb.SessionsResolverTest do
       assert [%{"message" => "auth_failed"} | _] = json["errors"]
     end
   end
+
+  describe "&logout/3" do
+    @tag :login
+    test "revokes current token", %{conn: conn} do
+      token = Guardian.Plug.current_token(conn)
+      assert {:ok, _} = Guardian.decode_and_verify(token)
+
+      mutation = """
+        mutation Logout {
+          logout {
+            successful
+          }
+        }
+      """
+
+      json = conn
+             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+             |> json_response(200)
+
+      assert json["data"]["logout"]["successful"]
+      assert {:error, :token_not_found} = Guardian.decode_and_verify(token)
+    end
+
+    test "returns error when not logged in", %{conn: conn} do
+      mutation = """
+        mutation Logout {
+          logout {
+            successful
+          }
+        }
+      """
+
+      json = conn
+             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+             |> json_response(200)
+
+      assert [%{"message" => "not_authorized"} | _] = json["errors"]
+    end
+  end
 end
