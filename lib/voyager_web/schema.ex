@@ -6,6 +6,7 @@ defmodule VoyagerWeb.Schema do
 
   import_types VoyagerWeb.Schema.UsersTypes
   import_types VoyagerWeb.Schema.SessionsTypes
+  import_types VoyagerWeb.Schema.PasswordsTypes
 
   query do
     import_fields :users_queries
@@ -15,5 +16,6 @@ defmodule VoyagerWeb.Schema do
   mutation do
     import_fields :users_mutations
     import_fields :sessions_mutations
+    import_fields :passwords_mutations
   end
 end
