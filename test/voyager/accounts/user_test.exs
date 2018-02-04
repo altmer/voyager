@@ -77,30 +77,39 @@ defmodule Voyager.UserTest do
 
   test "changeset with duplicate email" do
     existing_user = insert(:user)
-    changeset = User.changeset(
-      %User{email: existing_user.email},
-      @no_email_attrs
-    )
+
+    changeset =
+      User.changeset(
+        %User{email: existing_user.email},
+        @no_email_attrs
+      )
+
     assert {:error, _} = Repo.insert(changeset)
   end
 
   # password reset changesent
   test "valid password reset" do
     existing_user = insert(:user)
-    changeset = User.reset_password(existing_user, %{
-      "password" => "new_password",
-      "password_confirmation" => "new_password",
-    })
+
+    changeset =
+      User.reset_password(existing_user, %{
+        "password" => "new_password",
+        "password_confirmation" => "new_password"
+      })
+
     assert {:ok, user} = Repo.update(changeset)
     assert Bcrypt.checkpw("new_password", user.encrypted_password)
   end
 
   test "invalid password reset" do
     existing_user = insert(:user)
-    changeset = User.reset_password(existing_user, %{
-      "password" => "new_password",
-      "password_confirmation" => "new_password2",
-    })
+
+    changeset =
+      User.reset_password(existing_user, %{
+        "password" => "new_password",
+        "password_confirmation" => "new_password2"
+      })
+
     refute changeset.valid?
   end
 end

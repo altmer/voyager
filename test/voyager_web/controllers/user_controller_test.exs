@@ -6,13 +6,18 @@ defmodule VoyagerWeb.UserControllerTest do
   # PUT :upload_avatar
   @tag :login
   test "allows logged user to upload avatar", %{conn: conn, logged_user: user} do
-    conn = put conn, "/upload_avatar", user: %{
-      avatar: %Plug.Upload{path: "test/fixtures/cat.jpg", filename: "cat.jpg"},
-      crop_x: "0",
-      crop_y: "0",
-      crop_width: "500",
-      crop_height: "500"
-    }
+    conn =
+      put(
+        conn,
+        "/upload_avatar",
+        user: %{
+          avatar: %Plug.Upload{path: "test/fixtures/cat.jpg", filename: "cat.jpg"},
+          crop_x: "0",
+          crop_y: "0",
+          crop_width: "500",
+          crop_height: "500"
+        }
+      )
 
     assert 200 == conn.status
 
@@ -22,13 +27,18 @@ defmodule VoyagerWeb.UserControllerTest do
   end
 
   test "returns 404 in case of missing authorization", %{conn: conn} do
-    conn = put conn, "/upload_avatar", user: %{
-      avatar: %Plug.Upload{path: "test/fixtures/cat.jpg", filename: "cat.jpg"},
-      crop_x: "0",
-      crop_y: "0",
-      crop_width: "200",
-      crop_height: "200"
-    }
+    conn =
+      put(
+        conn,
+        "/upload_avatar",
+        user: %{
+          avatar: %Plug.Upload{path: "test/fixtures/cat.jpg", filename: "cat.jpg"},
+          crop_x: "0",
+          crop_y: "0",
+          crop_width: "200",
+          crop_height: "200"
+        }
+      )
 
     assert 404 == conn.status
   end

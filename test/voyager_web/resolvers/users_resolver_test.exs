@@ -23,9 +23,11 @@ defmodule VoyagerWeb.UsersResolverTest do
         }
       }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+        |> json_response(200)
 
       assert json["data"]["user"]["id"] == to_string(user.id)
       assert json["data"]["user"]["name"] == user.name
@@ -47,9 +49,11 @@ defmodule VoyagerWeb.UsersResolverTest do
         }
       }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+        |> json_response(200)
 
       assert json["data"]["user"]["id"] == to_string(user.id)
       assert json["data"]["user"]["initials"] == "T"
@@ -63,9 +67,11 @@ defmodule VoyagerWeb.UsersResolverTest do
         }
       }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.query_skeleton(query, "user"))
+        |> json_response(200)
 
       assert json["data"]["user"] == nil
       assert [%{"message" => "not_found"} | _] = json["errors"]
@@ -94,9 +100,11 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       registered_user = Users.get_by_email("test12344322@mail.test")
 
@@ -105,10 +113,12 @@ defmodule VoyagerWeb.UsersResolverTest do
 
       assert "de" == registered_user.locale
       assert "Test Testing" == registered_user.name
-      assert {:ok, _, _} = Sessions.authenticate(%{
-        email: "test12344322@mail.test",
-        password: "12345678"
-      })
+
+      assert {:ok, _, _} =
+               Sessions.authenticate(%{
+                 email: "test12344322@mail.test",
+                 password: "12345678"
+               })
     end
 
     test "returns errors when input is invalid", %{conn: conn} do
@@ -132,18 +142,22 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
+
       assert json["data"]["register"]["result"]["id"] == nil
       assert json["data"]["register"]["successful"] == false
 
       assert [
-        %{
-          "field" => "passwordConfirmation",
-          "message" => "does not match confirmation"
-        }
-      | _] = json["data"]["register"]["messages"]
+               %{
+                 "field" => "passwordConfirmation",
+                 "message" => "does not match confirmation"
+               }
+               | _
+             ] = json["data"]["register"]["messages"]
 
       registered_user = Users.get_by_email("test1234335552@mail.test")
       assert registered_user == nil
@@ -167,18 +181,22 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> put_req_header("x-locale", "ru")
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> put_req_header("x-locale", "ru")
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
+
       assert json["data"]["register"]["successful"] == false
 
       assert [
-        %{
-          "field" => "passwordConfirmation",
-          "message" => "не совпадает с подтверждением"
-        }
-      | _] = json["data"]["register"]["messages"]
+               %{
+                 "field" => "passwordConfirmation",
+                 "message" => "не совпадает с подтверждением"
+               }
+               | _
+             ] = json["data"]["register"]["messages"]
 
       registered_user = Users.get_by_email("test1234335552@mail.test")
       assert registered_user == nil
@@ -209,9 +227,11 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["updateProfile"]["successful"] == true
 
@@ -244,18 +264,21 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["updateProfile"]["successful"] == false
 
       assert [
-        %{
-          "field" => "name",
-          "message" => "can't be blank"
-        }
-      | _] = json["data"]["updateProfile"]["messages"]
+               %{
+                 "field" => "name",
+                 "message" => "can't be blank"
+               }
+               | _
+             ] = json["data"]["updateProfile"]["messages"]
 
       updated_user = Users.get!(logged_user.id)
       assert "" != updated_user.name
@@ -278,9 +301,11 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert [%{"message" => "not_authorized"} | _] = json["errors"]
     end
@@ -306,9 +331,11 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["updateLocale"]["successful"] == true
 
@@ -341,17 +368,20 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["updatePassword"]["successful"] == true
       assert json["data"]["updatePassword"]["result"]["id"] == logged_user.id
 
-      assert {:ok, _, _} = Sessions.authenticate(%{
-        email: logged_user.email,
-        password: "test1234"
-      })
+      assert {:ok, _, _} =
+               Sessions.authenticate(%{
+                 email: logged_user.email,
+                 password: "test1234"
+               })
     end
 
     @tag :login
@@ -374,22 +404,27 @@ defmodule VoyagerWeb.UsersResolverTest do
           }
         }
       """
-      json = conn
-            |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-            |> json_response(200)
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["updatePassword"]["successful"] == false
-      assert [
-        %{
-          "field" => "oldPassword",
-          "message" => "is invalid"
-        }
-      | _] = json["data"]["updatePassword"]["messages"]
 
-      assert {:ok, _, _} = Sessions.authenticate(%{
-        email: logged_user.email,
-        password: "12345678"
-      })
+      assert [
+               %{
+                 "field" => "oldPassword",
+                 "message" => "is invalid"
+               }
+               | _
+             ] = json["data"]["updatePassword"]["messages"]
+
+      assert {:ok, _, _} =
+               Sessions.authenticate(%{
+                 email: logged_user.email,
+                 password: "12345678"
+               })
     end
   end
 end

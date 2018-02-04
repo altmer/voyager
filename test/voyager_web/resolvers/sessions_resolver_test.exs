@@ -21,11 +21,13 @@ defmodule VoyagerWeb.SessionsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       token = json["data"]["login"]["token"]
+
       {
         :ok,
         {claims, _}
@@ -49,9 +51,10 @@ defmodule VoyagerWeb.SessionsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert [%{"message" => "auth_failed"} | _] = json["errors"]
     end
@@ -71,9 +74,10 @@ defmodule VoyagerWeb.SessionsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["logout"]["successful"]
       assert {:error, :token_not_found} = Guardian.decode_and_verify(token)
@@ -88,9 +92,10 @@ defmodule VoyagerWeb.SessionsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert [%{"message" => "not_authorized"} | _] = json["errors"]
     end
@@ -108,9 +113,10 @@ defmodule VoyagerWeb.SessionsResolverTest do
       }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.query_skeleton(query, "CurrentUser"))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.query_skeleton(query, "CurrentUser"))
+        |> json_response(200)
 
       assert json["data"]["currentUser"]["id"] == to_string(user.id)
       assert json["data"]["currentUser"]["name"] == user.name
@@ -126,9 +132,10 @@ defmodule VoyagerWeb.SessionsResolverTest do
       }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.query_skeleton(query, "CurrentUser"))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.query_skeleton(query, "CurrentUser"))
+        |> json_response(200)
 
       assert [%{"message" => "not_authorized"} | _] = json["errors"]
     end

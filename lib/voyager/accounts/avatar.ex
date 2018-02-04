@@ -18,7 +18,8 @@ defmodule Voyager.Accounts.Avatar do
   def transform(:thumb, {_, scope}) do
     {
       :convert,
-      crop_string(scope) <> " " <> "-strip -thumbnail 100x100^ -gravity center -extent 100x100",
+      crop_string(scope) <>
+        " " <> "-strip -thumbnail 100x100^ -gravity center -extent 100x100",
       :png
     }
   end
@@ -30,10 +31,9 @@ defmodule Voyager.Accounts.Avatar do
     "uploads/users/#{folder}/avatar"
   end
 
-  defp crop_string(s),
-    do: crop_string(s.crop_width, s.crop_height, s.crop_x, s.crop_y)
-  defp crop_string(nil, nil, nil, nil),
-    do: base_params()
+  defp crop_string(s), do: crop_string(s.crop_width, s.crop_height, s.crop_x, s.crop_y)
+  defp crop_string(nil, nil, nil, nil), do: base_params()
+
   defp crop_string(crop_width, crop_height, crop_x, crop_y),
     do: "-crop #{crop_width}x#{crop_height}+#{crop_x}+#{crop_y} #{base_params()}"
 

@@ -10,11 +10,13 @@ defmodule Voyager.AuthTokensTest do
   describe "AuthTokens.purge_expired" do
     test "removes expired tokens" do
       user = insert(:user)
+
       {
         :ok,
         _,
         %{"jti" => jti_expired}
       } = Guardian.encode_and_sign(user, %{}, ttl: {-1, :hours})
+
       {
         :ok,
         _,
@@ -24,7 +26,7 @@ defmodule Voyager.AuthTokensTest do
       assert Repo.get_by(AuthToken, jti: jti_expired)
       assert Repo.get_by(AuthToken, jti: jti_valid)
 
-      AuthTokens.purge_expired
+      AuthTokens.purge_expired()
 
       refute Repo.get_by(AuthToken, jti: jti_expired)
       assert Repo.get_by(AuthToken, jti: jti_valid)

@@ -8,26 +8,23 @@ defmodule VoyagerWeb.Resolvers do
   alias Kronky.ValidationMessage
   alias Kronky.ChangesetParser
 
-  def single_query_result(nil),
-    do: {:error, :not_found}
-  def single_query_result(result),
-    do: {:ok, result}
+  def single_query_result(nil), do: {:error, :not_found}
+  def single_query_result(result), do: {:ok, result}
 
-  def mutation_result({:ok, result}),
-    do: {:ok, Payload.success_payload(result)}
+  def mutation_result({:ok, result}), do: {:ok, Payload.success_payload(result)}
+
   def mutation_result({:error, %Ecto.Changeset{} = changeset}),
     do: {:ok, changeset |> extract_messages() |> Payload.error_payload()}
-  def mutation_result({:error, _} = error_tuple),
-    do: error_tuple
 
-  def not_authorized,
-    do: {:error, "not_authorized"}
+  def mutation_result({:error, _} = error_tuple), do: error_tuple
+
+  def not_authorized, do: {:error, "not_authorized"}
 
   defp extract_messages(changeset) do
     changeset
     |> Changeset.traverse_errors(&construct_traversed_message/3)
-    |> Enum.to_list
-    |> Enum.flat_map(fn({_field, values}) -> values end)
+    |> Enum.to_list()
+    |> Enum.flat_map(fn {_field, values} -> values end)
   end
 
   defp construct_traversed_message(_changeset, field, {message, opts}) do

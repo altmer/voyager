@@ -45,8 +45,7 @@ defmodule Voyager.Accounts.AuthTokenSweeper do
 
   # Server functions
 
-  def start_link,
-    do: start_link([])
+  def start_link, do: start_link([])
 
   def start_link(state, _opts \\ []) do
     GenServer.start_link(__MODULE__, Enum.into(state, %{}), name: __MODULE__)
@@ -66,12 +65,13 @@ defmodule Voyager.Accounts.AuthTokenSweeper do
     if state[:timer] do
       Process.cancel_timer(state.timer)
     end
+
     timer = Process.send_after(self(), :sweep, @interval)
     Map.merge(state, %{timer: timer})
   end
 
   defp sweep(state) do
-    AuthTokens.purge_expired
+    AuthTokens.purge_expired()
     reset_state_timer(state)
   end
 end

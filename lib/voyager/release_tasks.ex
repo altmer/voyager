@@ -11,40 +11,49 @@ defmodule Voyager.ReleaseTasks do
   alias Ecto.Migrator
 
   def db_create do
-    with_environment_loaded fn ->
-      config = [username: db_config(:username), password: db_config(:password),
-                hostname: db_config(:hostname), database: db_config(:database)]
-      IO.puts "#{inspect config}"
-      case Repo.__adapter__.storage_up(config) do
+    with_environment_loaded(fn ->
+      config = [
+        username: db_config(:username),
+        password: db_config(:password),
+        hostname: db_config(:hostname),
+        database: db_config(:database)
+      ]
+
+      IO.puts("#{inspect(config)}")
+
+      case Repo.__adapter__().storage_up(config) do
         :ok ->
-          Logger.info "Database created"
+          Logger.info("Database created")
+
         {:error, :already_up} ->
-          Logger.info "Database already exists"
+          Logger.info("Database already exists")
+
         {:error, reason} ->
           raise "Database creation failed (#{reason})"
       end
-    end
+    end)
   end
 
   def db_migrate do
-    with_environment_loaded fn ->
-      Logger.info "Running migrations"
+    with_environment_loaded(fn ->
+      Logger.info("Running migrations")
       Migrator.run(Repo, migrations_path(), :up, all: true)
-    end
+    end)
   end
 
   defp with_environment_loaded(fun) do
-    IO.puts "Loading application.."
+    IO.puts("Loading application..")
+
     case Application.load(@app) do
       :ok -> nil
       {:error, {:already_loaded, @app}} -> nil
       {:error, reason} -> raise "Error loading application #{reason}"
     end
 
-    IO.puts "Starting dependencies.."
+    IO.puts("Starting dependencies..")
     Enum.each(@start_apps, &Application.ensure_all_started/1)
 
-    Logger.info "Starting repo.."
+    Logger.info("Starting repo..")
     Repo.start_link(pool_size: 1)
 
     fun.()
@@ -53,6 +62,7 @@ defmodule Voyager.ReleaseTasks do
   end
 
   defp db_config, do: Application.get_env(@app, Repo)
+
   defp db_config(key) do
     case db_config() |> Keyword.fetch(key) do
       {:ok, val} -> val

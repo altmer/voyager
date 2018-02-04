@@ -14,24 +14,24 @@ defmodule Voyager.Accounts.User do
   @foreign_key_type :binary_id
 
   schema "users" do
-    field :email, :string
-    field :name, :string
+    field(:email, :string)
+    field(:name, :string)
 
-    field :avatar, Avatar.Type
-    field :crop_x, :string, virtual: true
-    field :crop_y, :string, virtual: true
-    field :crop_width, :string, virtual: true
-    field :crop_height, :string, virtual: true
+    field(:avatar, Avatar.Type)
+    field(:crop_x, :string, virtual: true)
+    field(:crop_y, :string, virtual: true)
+    field(:crop_width, :string, virtual: true)
+    field(:crop_height, :string, virtual: true)
 
-    field :encrypted_password, :string
-    field :reset_password_jti, :string
-    field :password, :string, virtual: true
-    field :old_password, :string, virtual: true
+    field(:encrypted_password, :string)
+    field(:reset_password_jti, :string)
+    field(:password, :string, virtual: true)
+    field(:old_password, :string, virtual: true)
 
-    field :home_town_id, :string
-    field :currency, :string
+    field(:home_town_id, :string)
+    field(:currency, :string)
 
-    field :locale, :string
+    field(:locale, :string)
 
     timestamps()
   end
@@ -94,6 +94,7 @@ defmodule Voyager.Accounts.User do
           :encrypted_password,
           Bcrypt.hashpwsalt(password)
         )
+
       _ ->
         current_changeset
     end

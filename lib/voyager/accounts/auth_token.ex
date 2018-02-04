@@ -12,12 +12,12 @@ defmodule Voyager.Accounts.AuthToken do
   @foreign_key_type :binary_id
 
   schema "auth_tokens" do
-    field :aud, :string
-    field :exp, :integer
-    field :jti, :string
-    field :jwt, :string
+    field(:aud, :string)
+    field(:exp, :integer)
+    field(:jti, :string)
+    field(:jwt, :string)
 
-    belongs_to :user, User
+    belongs_to(:user, User)
 
     timestamps()
   end

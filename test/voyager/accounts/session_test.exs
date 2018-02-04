@@ -9,38 +9,37 @@ defmodule Voyager.SessionsTest do
 
   describe "Sessions.authenticate/1" do
     test "it returns failed auth when given email is nil" do
-      assert {:error, :auth_failed} = Sessions.authenticate(%{
-        email: nil,
-        password: "1232"
-      })
+      assert {:error, :auth_failed} =
+               Sessions.authenticate(%{
+                 email: nil,
+                 password: "1232"
+               })
     end
 
     test "it returns failed auth when given email is empty" do
-      assert {:error, :auth_failed} = Sessions.authenticate(%{
-        email: "",
-        password: "1232"}
-      )
+      assert {:error, :auth_failed} =
+               Sessions.authenticate(%{email: "", password: "1232"})
     end
 
     test "it returns failed auth when there is no user with given email" do
       insert(:user)
-      assert {:error, :auth_failed} = Sessions.authenticate(
-        %{email: "some@email.com", password: "12345678"}
-      )
+
+      assert {:error, :auth_failed} =
+               Sessions.authenticate(%{email: "some@email.com", password: "12345678"})
     end
 
     test "it returns failed auth when password is incorrect" do
       user = insert(:user)
-      assert {:error, :auth_failed} = Sessions.authenticate(
-        %{email: user.email, password: "123456789"}
-      )
+
+      assert {:error, :auth_failed} =
+               Sessions.authenticate(%{email: user.email, password: "123456789"})
     end
 
     test "it returns ok with user and token when auth succeeded" do
       user = insert(:user)
-      assert {:ok, auth_user, jwt} = Sessions.authenticate(
-        %{email: user.email, password: "12345678"}
-      )
+
+      assert {:ok, auth_user, jwt} =
+               Sessions.authenticate(%{email: user.email, password: "12345678"})
 
       assert auth_user.id == user.id
 
@@ -57,9 +56,13 @@ defmodule Voyager.SessionsTest do
   describe "Sessions.from_token/1" do
     test "it returns user if it still exists" do
       user = insert(:user)
-      {:ok, jwt, _} = Guardian.encode_and_sign(
-        user, %{}, ttl: {1, :hours}
-      )
+
+      {:ok, jwt, _} =
+        Guardian.encode_and_sign(
+          user,
+          %{},
+          ttl: {1, :hours}
+        )
 
       assert {:ok, token_user, _} = Sessions.from_token(jwt)
       assert token_user.id == user.id
@@ -67,9 +70,13 @@ defmodule Voyager.SessionsTest do
 
     test "it returns error if token is not in DB" do
       user = insert(:user)
-      {:ok, jwt, _} = Guardian.encode_and_sign(
-        user, %{}, ttl: {1, :hours}
-      )
+
+      {:ok, jwt, _} =
+        Guardian.encode_and_sign(
+          user,
+          %{},
+          ttl: {1, :hours}
+        )
 
       Repo.delete_all(AuthToken)
 

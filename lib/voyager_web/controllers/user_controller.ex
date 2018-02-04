@@ -6,7 +6,7 @@ defmodule VoyagerWeb.UserController do
 
   require Logger
 
-  plug :scrub_params, "user"
+  plug(:scrub_params, "user")
 
   def upload_avatar(conn, %{"user" => user_params}) do
     conn
@@ -15,10 +15,7 @@ defmodule VoyagerWeb.UserController do
     |> render_response(conn)
   end
 
-  defp render_response({:error, :not_found}, conn),
-    do: send_resp(conn, 404, "")
-  defp render_response({:error, %Ecto.Changeset{}}, conn),
-    do: send_resp(conn, 422, "")
-  defp render_response({:ok, _}, conn),
-    do: send_resp(conn, 200, "")
+  defp render_response({:error, :not_found}, conn), do: send_resp(conn, 404, "")
+  defp render_response({:error, %Ecto.Changeset{}}, conn), do: send_resp(conn, 422, "")
+  defp render_response({:ok, _}, conn), do: send_resp(conn, 200, "")
 end

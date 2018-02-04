@@ -22,17 +22,17 @@ defmodule VoyagerWeb.OmniauthControllerTest do
 
       redirect_path =
         conn
-        |> assign(
-            :ueberauth_auth, %{provider: :google, info: %{email: user.email}}
-           )
+        |> assign(:ueberauth_auth, %{provider: :google, info: %{email: user.email}})
         |> OmniauthController.callback(%{})
         |> redirected_to()
 
       assert redirect_path =~ "/sessions/auth?result=success&token="
-      assert %{"jwt" => jwt} = Regex.named_captures(
-        ~r/\/sessions\/auth\?result=success&token=(?<jwt>.+)/,
-        redirect_path
-      )
+
+      assert %{"jwt" => jwt} =
+               Regex.named_captures(
+                 ~r/\/sessions\/auth\?result=success&token=(?<jwt>.+)/,
+                 redirect_path
+               )
 
       {:ok, {claims, _}} = Guardian.decode_and_verify(jwt)
       assert {:ok, auth_user} = Guardian.resource_from_claims({claims, jwt})
@@ -43,26 +43,25 @@ defmodule VoyagerWeb.OmniauthControllerTest do
     test "redirects to success if user does not exist", %{conn: conn} do
       redirect_path =
         conn
-        |> assign(
-             :ueberauth_auth,
-             %{
-                provider: :google,
-                info: %{
-                  email: "someemail@mail.test",
-                  first_name: "Paul",
-                  last_name: "Richey",
-                  image: nil
-                }
-             }
-           )
+        |> assign(:ueberauth_auth, %{
+          provider: :google,
+          info: %{
+            email: "someemail@mail.test",
+            first_name: "Paul",
+            last_name: "Richey",
+            image: nil
+          }
+        })
         |> OmniauthController.callback(%{})
         |> redirected_to()
 
       assert redirect_path =~ "/sessions/auth?result=success&token="
-      assert %{"jwt" => jwt} = Regex.named_captures(
-        ~r/\/sessions\/auth\?result=success&token=(?<jwt>.+)/,
-        redirect_path
-      )
+
+      assert %{"jwt" => jwt} =
+               Regex.named_captures(
+                 ~r/\/sessions\/auth\?result=success&token=(?<jwt>.+)/,
+                 redirect_path
+               )
 
       {:ok, {claims, _}} = Guardian.decode_and_verify(jwt)
       assert {:ok, auth_user} = Guardian.resource_from_claims({claims, jwt})
@@ -73,22 +72,19 @@ defmodule VoyagerWeb.OmniauthControllerTest do
     test "redirects to failure if params are not valid", %{conn: conn} do
       redirect_path =
         conn
-        |> assign(
-             :ueberauth_auth,
-             %{
-                provider: :google,
-                info: %{
-                  email: nil,
-                  first_name: nil,
-                  last_name: nil,
-                  image: nil
-                }
-             }
-           )
+        |> assign(:ueberauth_auth, %{
+          provider: :google,
+          info: %{
+            email: nil,
+            first_name: nil,
+            last_name: nil,
+            image: nil
+          }
+        })
         |> OmniauthController.callback(%{})
         |> redirected_to()
 
-        assert redirect_path == "/sessions/auth?result=failure"
+      assert redirect_path == "/sessions/auth?result=failure"
     end
   end
 end

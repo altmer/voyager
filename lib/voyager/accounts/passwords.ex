@@ -16,26 +16,27 @@ defmodule Voyager.Accounts.Passwords do
     |> do_send_reset_password_email()
   end
 
-  def generate_reset_token(nil),
-    do: {:error, :not_found}
+  def generate_reset_token(nil), do: {:error, :not_found}
 
   def generate_reset_token(user) do
-    {:ok, jwt, %{"jti" => jti}} = Guardian.encode_and_sign(
-      user, %{}, ttl: {1, :hours}
-    )
+    {:ok, jwt, %{"jti" => jti}} =
+      Guardian.encode_and_sign(
+        user,
+        %{},
+        ttl: {1, :hours}
+      )
+
     %{user: user, jwt: jwt, jti: jti}
   end
 
-  def set_reset_token({:error, reason}),
-    do: {:error, reason}
+  def set_reset_token({:error, reason}), do: {:error, reason}
 
   def set_reset_token(%{user: user, jwt: jwt, jti: jti}) do
     {:ok, user} = Users.set_reset_token(user, jti)
     %{user: user, jwt: jwt}
   end
 
-  def do_send_reset_password_email({:error, reason}),
-    do: {:error, reason}
+  def do_send_reset_password_email({:error, reason}), do: {:error, reason}
 
   def do_send_reset_password_email(%{user: user, jwt: jwt}) do
     Mailer.deliver_later(
@@ -46,11 +47,11 @@ defmodule Voyager.Accounts.Passwords do
         user.locale
       )
     )
+
     {:ok, user}
   end
 
-  def reset_password_link(jwt),
-    do: "#{Endpoint.url}/password/reset/#{jwt}"
+  def reset_password_link(jwt), do: "#{Endpoint.url()}/password/reset/#{jwt}"
 
   def reset_password(jwt, password_params) do
     with {:ok, user, jti} <- Sessions.from_token(jwt),

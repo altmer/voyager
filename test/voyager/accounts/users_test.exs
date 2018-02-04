@@ -38,37 +38,40 @@ defmodule Voyager.UsersTest do
 
   describe "Users.add/1" do
     test "it create user with default locale if params are valid" do
-      assert {:ok, user} = Users.add(%{
-          email: "test@mail.test",
-          password: "12345678",
-          password_confirmation: "12345678",
-          name: "Ada Lovelace",
-          locale: "de"
-        }
-      )
+      assert {:ok, user} =
+               Users.add(%{
+                 email: "test@mail.test",
+                 password: "12345678",
+                 password_confirmation: "12345678",
+                 name: "Ada Lovelace",
+                 locale: "de"
+               })
 
       assert "Ada Lovelace" == user.name
       assert "de" == user.locale
     end
 
     test "it returns validation error if params are invalid" do
-      assert {:error, _} = Users.add(%{
-          password: "12345678",
-          password_confirmation: "12345678",
-          name: "Ada Lovelace",
-          locale: "de"
-        }
-      )
+      assert {:error, _} =
+               Users.add(%{
+                 password: "12345678",
+                 password_confirmation: "12345678",
+                 name: "Ada Lovelace",
+                 locale: "de"
+               })
     end
   end
 
   describe "Users.update_profile/2" do
     test "it updates user and returns it if params are valid" do
       user = insert(:user)
-      assert {:ok, updated_user} = Users.update_profile(user, %{
-        "name" => "Dart Vader",
-        "currency" => "USD"
-      })
+
+      assert {:ok, updated_user} =
+               Users.update_profile(user, %{
+                 "name" => "Dart Vader",
+                 "currency" => "USD"
+               })
+
       assert user.id == updated_user.id
       assert "Dart Vader" == updated_user.name
       assert "USD" == updated_user.currency
@@ -76,43 +79,54 @@ defmodule Voyager.UsersTest do
 
     test "it returns error if params are invalid" do
       user = insert(:user)
-      assert {:error, _} = Users.update_profile(user, %{
-        "name" => "",
-        "home_town_id" => "shady"
-      })
+
+      assert {:error, _} =
+               Users.update_profile(user, %{
+                 "name" => "",
+                 "home_town_id" => "shady"
+               })
     end
   end
 
   describe "Users.update_password/2" do
     test "it updates user password if params are valid" do
       user = insert(:user)
-      assert {:ok, updated_user} = Users.update_password(user, %{
-        "old_password" => "12345678",
-        "password" => "strong_password",
-        "password_confirmation" => "strong_password"
-      })
+
+      assert {:ok, updated_user} =
+               Users.update_password(user, %{
+                 "old_password" => "12345678",
+                 "password" => "strong_password",
+                 "password_confirmation" => "strong_password"
+               })
+
       assert user.id == updated_user.id
       assert Bcrypt.checkpw("strong_password", updated_user.encrypted_password)
     end
 
     test "it does not update user password if old password is not valid" do
       user = insert(:user)
-      assert {:error, _} = Users.update_password(user, %{
-        "old_password" => "123456789",
-        "password" => "strong_password",
-        "password_confirmation" => "strong_password"
-      })
+
+      assert {:error, _} =
+               Users.update_password(user, %{
+                 "old_password" => "123456789",
+                 "password" => "strong_password",
+                 "password_confirmation" => "strong_password"
+               })
+
       updated_user = Users.get!(user.id)
       refute Bcrypt.checkpw("strong_password", updated_user.encrypted_password)
     end
 
     test "it does not update user password if confirmation does not match" do
       user = insert(:user)
-      assert {:error, _} = Users.update_password(user, %{
-        "old_password" => "12345678",
-        "password" => "strong_password",
-        "password_confirmation" => "strong_password2"
-      })
+
+      assert {:error, _} =
+               Users.update_password(user, %{
+                 "old_password" => "12345678",
+                 "password" => "strong_password",
+                 "password_confirmation" => "strong_password2"
+               })
+
       updated_user = Users.get!(user.id)
       refute Bcrypt.checkpw("strong_password", updated_user.encrypted_password)
     end
@@ -121,20 +135,26 @@ defmodule Voyager.UsersTest do
   describe "Users.reset_password/2" do
     test "it updates user password if params are valid" do
       user = insert(:user)
-      assert {:ok, updated_user} = Users.reset_password(user, %{
-        "password" => "strong_password",
-        "password_confirmation" => "strong_password"
-      })
+
+      assert {:ok, updated_user} =
+               Users.reset_password(user, %{
+                 "password" => "strong_password",
+                 "password_confirmation" => "strong_password"
+               })
+
       assert user.id == updated_user.id
       assert Bcrypt.checkpw("strong_password", updated_user.encrypted_password)
     end
 
     test "it does not update user password if confirmation does not match" do
       user = insert(:user)
-      assert {:error, _} = Users.reset_password(user, %{
-        "password" => "strong_password",
-        "password_confirmation" => "strong_password2"
-      })
+
+      assert {:error, _} =
+               Users.reset_password(user, %{
+                 "password" => "strong_password",
+                 "password_confirmation" => "strong_password2"
+               })
+
       updated_user = Users.get!(user.id)
       refute Bcrypt.checkpw("strong_password", updated_user.encrypted_password)
     end

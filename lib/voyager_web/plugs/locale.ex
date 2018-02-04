@@ -20,6 +20,6 @@ defmodule VoyagerWeb.Plugs.Locale do
 
   defp set_locale(locale, _) when locale in @locales,
     do: Gettext.put_locale(VoyagerWeb.Gettext, locale)
-  defp set_locale(_, default),
-    do: Gettext.put_locale(VoyagerWeb.Gettext, default)
+
+  defp set_locale(_, default), do: Gettext.put_locale(VoyagerWeb.Gettext, default)
 end

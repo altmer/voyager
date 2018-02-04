@@ -8,12 +8,10 @@ defmodule Voyager.Accounts.AuthTokens do
   alias Voyager.Utils
   alias Voyager.Accounts.AuthToken
 
-  def purge_expired,
-    do: Repo.delete_all(expired_query())
+  def purge_expired, do: Repo.delete_all(expired_query())
 
   defp expired_query do
     timestamp = Utils.timestamp()
-    from t in AuthToken,
-      where: t.exp < ^timestamp
+    from(t in AuthToken, where: t.exp < ^timestamp)
   end
 end

@@ -5,8 +5,8 @@ defmodule Voyager.Factory do
 
   def user_factory do
     %User{
-      name: Faker.Name.name,
-      email: Faker.Internet.safe_email,
+      name: Faker.Name.name(),
+      email: Faker.Internet.safe_email(),
       encrypted_password: Comeonin.Bcrypt.hashpwsalt("12345678"),
       locale: "en",
       home_town_id: "1234",

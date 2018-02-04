@@ -20,11 +20,13 @@ defmodule VoyagerWeb.PasswordsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["forgotPassword"]["successful"]
+
       assert_delivered_with(
         to: [{user.name, user.email}],
         subject: "Password reset"
@@ -43,9 +45,10 @@ defmodule VoyagerWeb.PasswordsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["forgotPassword"]["successful"]
       assert_no_emails_delivered()
@@ -77,9 +80,10 @@ defmodule VoyagerWeb.PasswordsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       refute json["data"]["resetPassword"]["successful"]
       assert [%{"message" => "token_expired"} | _] = json["errors"]
@@ -112,17 +116,20 @@ defmodule VoyagerWeb.PasswordsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       refute json["data"]["resetPassword"]["successful"]
+
       assert [
-        %{
-          "field" => "passwordConfirmation",
-          "message" => "does not match confirmation"
-        }
-      | _] = json["data"]["resetPassword"]["messages"]
+               %{
+                 "field" => "passwordConfirmation",
+                 "message" => "does not match confirmation"
+               }
+               | _
+             ] = json["data"]["resetPassword"]["messages"]
 
       updated_user = Users.get!(user.id)
       refute Comeonin.Bcrypt.checkpw("test1234", updated_user.encrypted_password)
@@ -152,9 +159,10 @@ defmodule VoyagerWeb.PasswordsResolverTest do
         }
       """
 
-      json = conn
-             |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-             |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
       assert json["data"]["resetPassword"]["successful"]
       assert json["data"]["resetPassword"]["result"]["id"] == to_string(user.id)
