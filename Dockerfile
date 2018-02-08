@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir:1.5.3 as builder
+FROM bitwalker/alpine-elixir:1.6 as builder
 
 ENV HOME /opt/app/
 ENV TERM xterm
@@ -23,7 +23,6 @@ RUN mix release --env=prod --verbose
 
 # Production image
 FROM bitwalker/alpine-erlang:20.1.3
-MAINTAINER Andrey Marchenko <igendou@gmail.com>
 EXPOSE 4000
 
 ENV PORT 4000

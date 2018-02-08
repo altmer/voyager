@@ -46,6 +46,15 @@ defmodule VoyagerWeb.Endpoint do
     signing_salt: "252gAQMW"
   )
 
+  plug(
+    CORSPlug,
+    origin: [
+      "http://localhost:3000",
+      "https://travel.hmstr.rocks",
+      "https://betatravel.hmstr.rocks"
+    ]
+  )
+
   plug(VoyagerWeb.Router)
 
   @doc """

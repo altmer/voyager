@@ -1,4 +1,8 @@
 defmodule VoyagerWeb.OmniauthControllerTest do
+  @moduledoc """
+  Test for OmniauthController
+  """
+
   use VoyagerWeb.ConnCase
 
   import Voyager.Factory
