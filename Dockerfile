@@ -1,11 +1,11 @@
-FROM bitwalker/alpine-elixir:1.6 as builder
+FROM bitwalker/alpine-elixir:1.6.1 as builder
 
 ENV HOME /opt/app/
 ENV TERM xterm
 ENV MIX_ENV prod
 
 RUN \
-  apk --no-cache --update add \
+  apk add \
   git make g++ && \
   rm -rf /var/cache/apk/*
 
