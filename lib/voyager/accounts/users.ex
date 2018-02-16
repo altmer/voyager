@@ -52,12 +52,6 @@ defmodule Voyager.Accounts.Users do
     |> Repo.update()
   end
 
-  def update_locale(user, user_params) do
-    user
-    |> User.update_locale(user_params)
-    |> Repo.update()
-  end
-
   defp create_user(params) do
     Multi.new()
     |> Multi.insert(:user, User.changeset(%User{}, params))

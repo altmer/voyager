@@ -311,42 +311,6 @@ defmodule VoyagerWeb.UsersResolverTest do
     end
   end
 
-  describe "&update_locale/3" do
-    @tag :login
-    test "updates user locale", %{conn: conn, logged_user: logged_user} do
-      mutation = """
-        mutation UpdateLocale {
-          updateLocale(
-            locale: "ru",
-          ) {
-            result {
-              id
-              locale
-            }
-            successful
-            messages {
-              field
-              message
-            }
-          }
-        }
-      """
-
-      json =
-        conn
-        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-        |> json_response(200)
-
-      assert json["data"]["updateLocale"]["successful"] == true
-
-      assert json["data"]["updateLocale"]["result"]["id"] == logged_user.id
-      assert json["data"]["updateLocale"]["result"]["locale"] == "ru"
-
-      updated_user = Users.get!(logged_user.id)
-      assert "ru" == updated_user.locale
-    end
-  end
-
   describe "&update_password/3" do
     @tag :login
     test "updates user password", %{conn: conn, logged_user: logged_user} do

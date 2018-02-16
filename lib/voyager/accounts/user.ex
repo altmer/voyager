@@ -74,12 +74,6 @@ defmodule Voyager.Accounts.User do
     |> generate_encrypted_password
   end
 
-  def update_locale(struct, params \\ %{}) do
-    struct
-    |> cast(params, [:locale])
-    |> validate_required([:locale])
-  end
-
   def set_reset_password_jti(struct, params \\ %{}) do
     struct
     |> cast(params, [:reset_password_jti])

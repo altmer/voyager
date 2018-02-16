@@ -175,20 +175,4 @@ defmodule Voyager.UsersTest do
       refute "new_token" == updated_user.reset_password_jti
     end
   end
-
-  describe "Users.update_locae/2" do
-    test "it updates user locale if provided" do
-      user = insert(:user)
-      assert {:ok, updated_user} = Users.update_locale(user, %{"locale" => "de"})
-      assert user.id == updated_user.id
-      assert "de" == updated_user.locale
-    end
-
-    test "it does not update user locale if blank" do
-      user = insert(:user)
-      assert {:error, _} = Users.update_locale(user, %{"locale" => ""})
-      updated_user = Users.get!(user.id)
-      refute "de" == updated_user.locale
-    end
-  end
 end
