@@ -5,8 +5,8 @@ ENV TERM xterm
 ENV MIX_ENV prod
 
 RUN \
-  apk add \
-  git make g++ && \
+  apk add --update \
+  musl=1.1.18-r3 git make g++ && \
   rm -rf /var/cache/apk/*
 
 WORKDIR $HOME
