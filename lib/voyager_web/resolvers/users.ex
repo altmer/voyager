@@ -19,14 +19,6 @@ defmodule VoyagerWeb.Resolvers.Users do
 
   def update_profile(_parent, _args, _resolution), do: Resolvers.not_authorized()
 
-  def update_locale(_parent, args, %{context: %{current_user: current_user}}),
-    do:
-      current_user
-      |> VoyagerUsers.update_locale(args)
-      |> Resolvers.mutation_result()
-
-  def update_locale(_parent, _args, _resolution), do: Resolvers.not_authorized()
-
   def update_password(_parent, args, %{context: %{current_user: current_user}}),
     do:
       current_user

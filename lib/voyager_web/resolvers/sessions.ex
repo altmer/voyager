@@ -19,6 +19,8 @@ defmodule VoyagerWeb.Resolvers.Sessions do
   def current_user(_parent, _args, %{context: %{current_user: user}}), do: {:ok, user}
   def current_user(_, _, _), do: Resolvers.not_authorized()
 
-  defp authentication_result({:ok, _, token}), do: {:ok, %{token: token}}
+  defp authentication_result({:ok, user, token}),
+    do: {:ok, %{token: token, current_user: user}}
+
   defp authentication_result({:error, _} = error_tuple), do: error_tuple
 end

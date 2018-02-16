@@ -9,6 +9,7 @@ defmodule VoyagerWeb.Schema.SessionsTypes do
 
   object :session do
     field(:token, :string)
+    field(:current_user, :user)
   end
 
   object :session_destroy do
