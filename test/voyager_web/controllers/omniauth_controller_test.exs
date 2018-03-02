@@ -18,7 +18,7 @@ defmodule VoyagerWeb.OmniauthControllerTest do
         |> OmniauthController.callback(%{})
         |> redirected_to()
 
-      assert redirect_path == "/sessions/auth?result=failure"
+      assert redirect_path =~ "/sessions/auth?result=failure"
     end
 
     test "redirects to success if user with given email exists", %{conn: conn} do
@@ -88,7 +88,7 @@ defmodule VoyagerWeb.OmniauthControllerTest do
         |> OmniauthController.callback(%{})
         |> redirected_to()
 
-      assert redirect_path == "/sessions/auth?result=failure"
+      assert redirect_path =~ "/sessions/auth?result=failure"
     end
   end
 end

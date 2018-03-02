@@ -6,7 +6,7 @@
 use Mix.Config
 
 # General application configuration
-config :voyager, ecto_repos: [Voyager.Repo]
+config :voyager, ecto_repos: [Voyager.Repo], frontend_url: "http://localhost:3000"
 
 # Configures the endpoint
 config :voyager, VoyagerWeb.Endpoint,

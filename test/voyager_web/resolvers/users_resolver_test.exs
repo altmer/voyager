@@ -1,4 +1,5 @@
 defmodule VoyagerWeb.UsersResolverTest do
+  @moduledoc false
   use VoyagerWeb.ConnCase
 
   import Voyager.Factory
@@ -86,8 +87,7 @@ defmodule VoyagerWeb.UsersResolverTest do
             name: "Test Testing",
             email: "test12344322@mail.test",
             password: "12345678",
-            passwordConfirmation:"12345678",
-            locale: "de"
+            passwordConfirmation:"12345678"
           ) {
             result {
               id
@@ -111,7 +111,6 @@ defmodule VoyagerWeb.UsersResolverTest do
       assert json["data"]["register"]["result"]["id"] == to_string(registered_user.id)
       assert json["data"]["register"]["successful"] == true
 
-      assert "de" == registered_user.locale
       assert "Test Testing" == registered_user.name
 
       assert {:ok, _, _} =
@@ -128,8 +127,7 @@ defmodule VoyagerWeb.UsersResolverTest do
             name: "Test Testing",
             email: "test1234335552@mail.test",
             password: "12345678",
-            passwordConfirmation:"123456789",
-            locale: "de"
+            passwordConfirmation:"123456789"
           ) {
             result {
               id
@@ -170,8 +168,7 @@ defmodule VoyagerWeb.UsersResolverTest do
             name: "Test Testing",
             email: "test1234335552@mail.test",
             password: "12345678",
-            passwordConfirmation:"123456789",
-            locale: "ru"
+            passwordConfirmation:"123456789"
           ) {
             successful
             messages {
@@ -315,7 +312,7 @@ defmodule VoyagerWeb.UsersResolverTest do
     @tag :login
     test "updates user password", %{conn: conn, logged_user: logged_user} do
       mutation = """
-        mutation UpdateLocale {
+        mutation UpdatePassword {
           updatePassword(
             oldPassword: "12345678",
             password: "test1234",
@@ -351,7 +348,7 @@ defmodule VoyagerWeb.UsersResolverTest do
     @tag :login
     test "validates data correctness", %{conn: conn, logged_user: logged_user} do
       mutation = """
-        mutation UpdateLocale {
+        mutation UpdatePassword {
           updatePassword(
             oldPassword: "123456789",
             password: "test1234",

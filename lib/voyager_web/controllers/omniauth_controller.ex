@@ -1,6 +1,7 @@
 defmodule VoyagerWeb.OmniauthController do
   use VoyagerWeb, :controller
 
+  alias Voyager.Config
   alias Voyager.Accounts.Omniauth.Google
 
   plug(Ueberauth)
@@ -21,8 +22,13 @@ defmodule VoyagerWeb.OmniauthController do
     end
   end
 
-  defp failure(conn), do: redirect(conn, to: "/sessions/auth?result=failure")
+  defp failure(conn),
+    do: redirect(conn, external: "#{Config.frontend_url()}/sessions/auth?result=failure")
 
   defp success(conn, jwt),
-    do: redirect(conn, to: "/sessions/auth?result=success&token=#{jwt}")
+    do:
+      redirect(
+        conn,
+        external: "#{Config.frontend_url()}/sessions/auth?result=success&token=#{jwt}"
+      )
 end

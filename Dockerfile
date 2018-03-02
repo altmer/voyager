@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir:1.6.1 as builder
+FROM bitwalker/alpine-elixir:1.6.2 as builder
 
 ENV HOME /opt/app/
 ENV TERM xterm

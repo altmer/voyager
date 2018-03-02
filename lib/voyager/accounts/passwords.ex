@@ -2,11 +2,11 @@ defmodule Voyager.Accounts.Passwords do
   @moduledoc """
     Accounts helper functions
   """
-  alias Voyager.Guardian
-  alias Voyager.Emails
   alias Voyager.Accounts.{Sessions, Users}
+  alias Voyager.Config
+  alias Voyager.Emails
   alias Voyager.Emails.Mailer
-  alias VoyagerWeb.Endpoint
+  alias Voyager.Guardian
 
   def send_reset_password_email(email) do
     email
@@ -51,7 +51,7 @@ defmodule Voyager.Accounts.Passwords do
     {:ok, user}
   end
 
-  def reset_password_link(jwt), do: "#{Endpoint.url()}/password/reset/#{jwt}"
+  def reset_password_link(jwt), do: "#{Config.frontend_url()}/reset_password/#{jwt}"
 
   def reset_password(jwt, password_params) do
     with {:ok, user, jti} <- Sessions.from_token(jwt),

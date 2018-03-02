@@ -53,7 +53,6 @@ defmodule VoyagerWeb.Schema.UsersTypes do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
       arg(:password_confirmation, non_null(:string))
-      arg(:locale, :string)
 
       resolve(&Users.register/3)
     end
@@ -89,7 +88,7 @@ defmodule VoyagerWeb.Schema.UsersTypes do
   defp color(user) do
     number =
       user.id
-      |> to_charlist
+      |> to_charlist()
       |> Enum.reduce(&+/2)
       |> rem(4)
 
