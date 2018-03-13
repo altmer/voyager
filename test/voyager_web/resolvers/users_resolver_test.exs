@@ -16,7 +16,6 @@ defmodule VoyagerWeb.UsersResolverTest do
         user(id: "#{user.id}") {
           id
           name
-          locale
           currency
           initials
           color
@@ -32,7 +31,6 @@ defmodule VoyagerWeb.UsersResolverTest do
 
       assert json["data"]["user"]["id"] == to_string(user.id)
       assert json["data"]["user"]["name"] == user.name
-      assert json["data"]["user"]["locale"] == user.locale
       assert json["data"]["user"]["currency"] == user.currency
       assert json["data"]["user"]["initials"] == "JD"
       assert json["data"]["user"]["color"] =~ ~r/user-color-[0-3]/

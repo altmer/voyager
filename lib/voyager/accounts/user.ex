@@ -31,14 +31,12 @@ defmodule Voyager.Accounts.User do
     field(:home_town_id, :string)
     field(:currency, :string)
 
-    field(:locale, :string)
-
     timestamps()
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email, :encrypted_password, :password, :locale])
+    |> cast(params, [:name, :email, :encrypted_password, :password])
     |> validate_required([:name, :email, :password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5)

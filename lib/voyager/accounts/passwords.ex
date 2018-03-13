@@ -44,7 +44,7 @@ defmodule Voyager.Accounts.Passwords do
         user.email,
         user.name,
         reset_password_link(jwt),
-        user.locale
+        "en"
       )
     )
 

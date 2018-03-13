@@ -13,7 +13,6 @@ defmodule VoyagerWeb.Schema.UsersTypes do
   object :user do
     field(:id, :id)
     field(:name, :string)
-    field(:locale, :string)
     field(:currency, :string)
     field(:home_town_id, :string)
 

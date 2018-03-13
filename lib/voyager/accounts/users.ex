@@ -14,8 +14,7 @@ defmodule Voyager.Accounts.Users do
 
   def add(user_params) do
     # default locale param
-    %{locale: "en"}
-    |> Map.merge(user_params)
+    user_params
     |> create_user()
     |> transaction_result()
   end
