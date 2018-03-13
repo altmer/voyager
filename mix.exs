@@ -1,4 +1,5 @@
 defmodule Voyager.Mixfile do
+  @moduledoc false
   use Mix.Project
 
   def project do
@@ -42,7 +43,7 @@ defmodule Voyager.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
-      {:ex_money, "~> 1.0"},
+      {:ex_money, "~> 2.2"},
       {:arc, "~> 0.8.0"},
       {:arc_ecto, "~> 0.7.0"},
       {:ex_aws, "~> 1.1"},
@@ -57,13 +58,12 @@ defmodule Voyager.Mixfile do
       {:bamboo, "~> 0.8"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
-      {:kronky, "~> 0.4.0"},
-      {:timex, "~> 3.1"},
+      {:kronky, "~> 0.5.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.7"},
       {:secure_random, "~> 0.5"},
       {:cors_plug, "~> 1.5"},
-      {:sentry, "~> 6.0.4"},
+      {:sentry, "~> 6.1"},
       {:bamboo_smtp, "~> 1.4.0", only: :dev},
       {:distillery, "~> 1.5", runtime: false}
     ]
