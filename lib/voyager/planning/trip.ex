@@ -23,6 +23,11 @@ defmodule Voyager.Planning.Trip do
     field(:private, :boolean)
 
     field(:cover, Cover.Type)
+    field(:crop_x, :string, virtual: true)
+    field(:crop_y, :string, virtual: true)
+    field(:crop_width, :string, virtual: true)
+    field(:crop_height, :string, virtual: true)
+
     field(:people_count_for_budget, :integer)
     field(:report, :string)
 
@@ -35,7 +40,26 @@ defmodule Voyager.Planning.Trip do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name])
-    |> validate_required([:name])
+    |> cast(params, [
+      :name,
+      :short_description,
+      :start_date,
+      :duration,
+      :currency,
+      :status,
+      :private,
+      :people_count_for_budget,
+      :report,
+      :archived,
+      :author_id
+    ])
+    |> validate_required([:name, :duration, :currency, :status, :author_id])
+    |> validate_inclusion(:duration, 1..30)
+  end
+
+  def upload_cover(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:crop_x, :crop_y, :crop_width, :crop_height])
+    |> cast_attachments(params, [:cover])
   end
 end

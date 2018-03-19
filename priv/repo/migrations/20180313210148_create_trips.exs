@@ -32,6 +32,6 @@ defmodule Voyager.Repo.Migrations.CreateTrips do
       timestamps()
     end
 
-    create(index(:trips, [:user_id]))
+    create(index(:trips, [:author_id]))
   end
 end
