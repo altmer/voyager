@@ -50,21 +50,24 @@ defmodule Voyager.Mixfile do
       {:hackney, "~> 1.6"},
       {:poison, "~> 3.1"},
       {:sweet_xml, "~> 0.6"},
-      {:faker, "~> 0.9", only: :test},
-      {:ex_machina, "~> 2.1", only: :test},
+      # auth
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:guardian, "~> 1.0"},
+      {:ueberauth, "~> 0.4"},
+      {:ueberauth_google, "~> 0.7"},
+      # emails
       {:bamboo, "~> 0.8"},
+      # graphql
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:kronky, "~> 0.5.0"},
-      {:ueberauth, "~> 0.4"},
-      {:ueberauth_google, "~> 0.7"},
       {:secure_random, "~> 0.5"},
       {:cors_plug, "~> 1.5"},
       {:sentry, "~> 6.1"},
       {:bamboo_smtp, "~> 1.4.0", only: :dev},
+      {:faker, "~> 0.9", only: :test},
+      {:ex_machina, "~> 2.1", only: :test},
       {:distillery, "~> 1.5", runtime: false}
     ]
   end

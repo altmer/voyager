@@ -1,4 +1,5 @@
 defmodule Voyager.UsersTest do
+  @moduledoc false
   use Voyager.DataCase
 
   import Voyager.Factory

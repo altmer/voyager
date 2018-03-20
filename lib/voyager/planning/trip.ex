@@ -12,6 +12,7 @@ defmodule Voyager.Planning.Trip do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
+  @statuses ["0_draft", "1_planned", "2_finished"]
 
   schema "trips" do
     field(:name, :string)
@@ -55,6 +56,7 @@ defmodule Voyager.Planning.Trip do
     ])
     |> validate_required([:name, :duration, :currency, :status, :author_id])
     |> validate_inclusion(:duration, 1..30)
+    |> validate_inclusion(:status, @statuses)
   end
 
   def upload_cover(struct, params \\ %{}) do
