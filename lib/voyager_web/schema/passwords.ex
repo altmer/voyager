@@ -1,4 +1,4 @@
-defmodule VoyagerWeb.Schema.PasswordsTypes do
+defmodule VoyagerWeb.Schema.Passwords do
   @moduledoc """
   GraphQL objects for passwords operations
   """

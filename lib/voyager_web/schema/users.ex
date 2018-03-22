@@ -1,4 +1,4 @@
-defmodule VoyagerWeb.Schema.UsersTypes do
+defmodule VoyagerWeb.Schema.Users do
   @moduledoc """
   GraphQL objects for user accounts
   """

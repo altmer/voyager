@@ -21,6 +21,9 @@ defmodule Voyager.Planning.Trips do
     |> Repo.update()
   end
 
+  def delete(%Trip{} = trip) do
+  end
+
   def upload_cover(nil, _), do: {:error, :not_found}
 
   def upload_cover(%Trip{} = trip, params) do

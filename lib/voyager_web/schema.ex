@@ -4,9 +4,9 @@ defmodule VoyagerWeb.Schema do
   """
   use Absinthe.Schema
 
-  import_types(VoyagerWeb.Schema.UsersTypes)
-  import_types(VoyagerWeb.Schema.SessionsTypes)
-  import_types(VoyagerWeb.Schema.PasswordsTypes)
+  import_types(VoyagerWeb.Schema.Users)
+  import_types(VoyagerWeb.Schema.Sessions)
+  import_types(VoyagerWeb.Schema.Passwords)
 
   query do
     import_fields(:users_queries)
