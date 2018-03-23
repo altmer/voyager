@@ -73,4 +73,12 @@ defmodule Voyager.Planning.TripsTest do
       assert {:error, %Ecto.Changeset{}} = Trips.update(trip, %{duration: 0})
     end
   end
+
+  describe "delete/1" do
+    test "it marks trip as archived" do
+      trip = insert(:trip)
+      assert {:ok, updated_trip} = Trips.delete(trip)
+      assert true = updated_trip.archived
+    end
+  end
 end

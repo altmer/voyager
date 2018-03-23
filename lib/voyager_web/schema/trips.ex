@@ -36,7 +36,7 @@ defmodule VoyagerWeb.Schema.Trips do
 
     field :cover_thumb, :string do
       resolve(fn trip, _, _ ->
-        {:ok, Cover.url({trip.cover, user}, :thumb)}
+        {:ok, Cover.url({trip.cover, trip}, :thumb)}
       end)
     end
   end
@@ -44,29 +44,30 @@ defmodule VoyagerWeb.Schema.Trips do
   payload_object(:user_payload, :user)
 
   input_object :trip_input do
-    arg(:name, non_null(:string))
-    arg(:short_description, :string)
-    arg(:start_date, :date)
-    arg(:duration, non_null(:integer))
-    arg(:currency, non_null(:string))
-    arg(:status, non_null(:status))
-    arg(:private, :boolean)
-    arg(:people_count_for_budget, non_null(:integer))
+    field(:name, non_null(:string))
+    field(:short_description, :string)
+    field(:start_date, :date)
+    field(:duration, non_null(:integer))
+    field(:currency, non_null(:string))
+    field(:status, non_null(:status))
+    field(:private, :boolean)
+    field(:people_count_for_budget, non_null(:integer))
   end
 
   object :trips_mutations do
     field :create_trip, type: :trip_payload, description: "Creates trip" do
-      arg(:trip_input, non_null(:trip_input))
+      arg(:input, non_null(:trip_input))
       resolve(&Trips.create/3)
     end
 
     field :update_trip, type: :trip_payload, description: "Updates trip" do
-      arg(:trip_input, non_null(:trip_input))
+      arg(:id, non_null(:string))
+      arg(:input, non_null(:trip_input))
       resolve(&Trips.update/3)
     end
 
     field :delete_trip, type: :something, description: "Deletes trip (marks as archived)" do
-      arg(:trip_id, non_null(:string))
+      arg(:id, non_null(:string))
       resolve(&Trips.delete/3)
     end
   end
