@@ -5,8 +5,6 @@ defmodule VoyagerWeb.Schema.Trips do
   use Absinthe.Schema.Notation
 
   import Kronky.Payload
-  import_types(Kronky.ValidationMessageTypes)
-  import_types(Absinthe.Type.Custom)
 
   alias Voyager.Planning.Cover
   alias VoyagerWeb.Resolvers.Trips
@@ -41,7 +39,7 @@ defmodule VoyagerWeb.Schema.Trips do
     end
   end
 
-  payload_object(:user_payload, :user)
+  payload_object(:trip_payload, :trip)
 
   input_object :trip_input do
     field(:name, non_null(:string))
@@ -49,7 +47,7 @@ defmodule VoyagerWeb.Schema.Trips do
     field(:start_date, :date)
     field(:duration, non_null(:integer))
     field(:currency, non_null(:string))
-    field(:status, non_null(:status))
+    field(:status, non_null(:string))
     field(:private, :boolean)
     field(:people_count_for_budget, non_null(:integer))
   end
@@ -66,7 +64,9 @@ defmodule VoyagerWeb.Schema.Trips do
       resolve(&Trips.update/3)
     end
 
-    field :delete_trip, type: :something, description: "Deletes trip (marks as archived)" do
+    field :delete_trip,
+      type: :trip_payload,
+      description: "Deletes trip (marks as archived)" do
       arg(:id, non_null(:string))
       resolve(&Trips.delete/3)
     end

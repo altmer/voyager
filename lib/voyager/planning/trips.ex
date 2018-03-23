@@ -6,7 +6,7 @@ defmodule Voyager.Planning.Trips do
   alias Voyager.Repo
   alias Voyager.Planning.Trip
 
-  def add(user, params) do
+  def add(params, user) do
     %Trip{author_id: user.id}
     |> Trip.changeset(params)
     |> Repo.insert()

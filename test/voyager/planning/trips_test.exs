@@ -22,7 +22,7 @@ defmodule Voyager.Planning.TripsTest do
     test "it creates valid trip" do
       user = insert(:user)
 
-      assert {:ok, trip} = Trips.add(user, @valid_attrs)
+      assert {:ok, trip} = Trips.add(@valid_attrs, user)
 
       assert @valid_attrs.name == trip.name
       assert @valid_attrs.short_description == trip.short_description
@@ -51,7 +51,7 @@ defmodule Voyager.Planning.TripsTest do
 
     test "it returns error if params are invalid" do
       user = insert(:user)
-      assert {:error, %Ecto.Changeset{}} = Trips.add(user, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Trips.add(@invalid_attrs, user)
     end
   end
 

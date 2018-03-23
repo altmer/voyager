@@ -4,9 +4,12 @@ defmodule VoyagerWeb.Schema do
   """
   use Absinthe.Schema
 
+  import_types(Kronky.ValidationMessageTypes)
+  import_types(Absinthe.Type.Custom)
   import_types(VoyagerWeb.Schema.Users)
   import_types(VoyagerWeb.Schema.Sessions)
   import_types(VoyagerWeb.Schema.Passwords)
+  import_types(VoyagerWeb.Schema.Trips)
 
   query do
     import_fields(:users_queries)
@@ -17,5 +20,6 @@ defmodule VoyagerWeb.Schema do
     import_fields(:users_mutations)
     import_fields(:sessions_mutations)
     import_fields(:passwords_mutations)
+    import_fields(:trips_mutations)
   end
 end

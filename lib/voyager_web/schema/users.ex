@@ -5,7 +5,6 @@ defmodule VoyagerWeb.Schema.Users do
   use Absinthe.Schema.Notation
 
   import Kronky.Payload
-  import_types(Kronky.ValidationMessageTypes)
 
   alias Voyager.Accounts.Avatar
   alias VoyagerWeb.Resolvers.Users
