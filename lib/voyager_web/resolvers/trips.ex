@@ -11,6 +11,8 @@ defmodule VoyagerWeb.Resolvers.Trips do
     |> Resolvers.mutation_result()
   end
 
+  def create(_parent, _args, _resolution), do: Resolvers.not_authorized()
+
   def update(_parent, %{input: args, id: trip_id}, %{
         context: %{current_user: current_user}
       }) do
@@ -22,11 +24,16 @@ defmodule VoyagerWeb.Resolvers.Trips do
     end
   end
 
-  def delete(_parent, args, %{context: %{current_user: current_user}}),
-    do:
-      current_user
-      |> VoyagerUsers.update_password(args)
+  def update(_parent, _args, _resolution), do: Resolvers.not_authorized()
+
+  def delete(_parent, %{id: trip_id}, %{context: %{current_user: current_user}}) do
+    with {:ok, trip} <- VoyagerTrips.get(trip_id),
+         :ok <- VoyagerTrips.authorize(:delete, current_user, trip) do
+      trip
+      |> VoyagerTrips.delete()
       |> Resolvers.mutation_result()
+    end
+  end
 
   def delete(_parent, _args, _resolution), do: Resolvers.not_authorized()
 end

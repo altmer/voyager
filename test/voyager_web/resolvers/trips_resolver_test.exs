@@ -235,4 +235,69 @@ defmodule VoyagerWeb.TripsResolverTest do
       assert updated_trip.name != "New name"
     end
   end
+
+  describe "delete/3" do
+    @tag :login
+    test "marks trip as archived", %{conn: conn, logged_user: logged_user} do
+      trip = insert(:trip, author_id: logged_user.id)
+
+      mutation = """
+        mutation DeleteTrip {
+          deleteTrip(
+            id: "#{trip.id}",
+          ) {
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
+
+      assert true = json["data"]["deleteTrip"]["successful"]
+
+      assert nil != Repo.get_by(Trip, id: trip.id, archived: true)
+    end
+
+    @tag :login
+    test "return not authorized error if user is not author", %{
+      conn: conn
+    } do
+      trip = insert(:trip)
+
+      mutation = """
+        mutation DeleteTrip {
+          deleteTrip(
+            id: "#{trip.id}"
+          ) {
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
+
+      assert [
+               %{
+                 "message" => "not_authorized"
+               }
+               | _
+             ] = json["errors"]
+
+      assert nil == Repo.get_by(Trip, id: trip.id, archived: true)
+    end
+  end
 end
