@@ -107,4 +107,89 @@ defmodule VoyagerWeb.TripsResolverTest do
       assert nil == Repo.get_by(Trip, name: "Wernigerode")
     end
   end
+
+  @tag :login
+  describe "update/3" do
+    test "updates and returns trip", %{conn: conn, logged_user: logged_user} do
+      trip = insert(:trip, author_id: logged_user.id)
+
+      mutation = """
+        mutation UpdateTrip {
+          updateTrip(
+            id: "#{trip.id}",
+            input: {
+              name: "New name",
+              duration: 5
+            }
+          ) {
+            result {
+              name
+              duration
+            }
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
+
+      assert true = json["data"]["updateTrip"]["successful"]
+      assert "New name" = json["data"]["updateTrip"]["result"]["name"]
+      assert 5 = json["data"]["updateTrip"]["result"]["duration"]
+
+      updated_trip = Repo.get_by(Trip, name: "New name")
+
+      assert "New name" = updated_trip.name
+      assert "Italian getaway" = updated_trip.short_description
+      assert 5 = updated_trip.duration
+      assert logged_user.id == updated_trip.author_id
+    end
+
+    # test "updates and returns trip", %{conn: conn, logged_user: logged_user} do
+    #   trip = insert(:trip, author_id: logged_user.id)
+
+    #   mutation = """
+    #     mutation UpdateTrip {
+    #       updateTrip(
+    #         input: {
+    #           name: "New name",
+    #           duration: 5
+    #         }
+    #       ) {
+    #         result {
+    #           name
+    #           duration
+    #         }
+    #         successful
+    #         messages {
+    #           field
+    #           message
+    #         }
+    #       }
+    #     }
+    #   """
+
+    #   json =
+    #     conn
+    #     |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+    #     |> json_response(200)
+
+    #   assert true = json["data"]["updateTrip"]["successful"]
+    #   assert "New name" = json["data"]["updateTrip"]["result"]["name"]
+    #   assert 5 = json["data"]["updateTrip"]["result"]["duration"]
+
+    #   updated_trip = Repo.get_by(Trip, name: "New name")
+
+    #   assert "Italian getaway" = updated_trip.short_description
+    #   assert 5 = updated_trip.duration
+    #   assert logged_user.id == updated_trip.author_id
+    # end
+  end
 end

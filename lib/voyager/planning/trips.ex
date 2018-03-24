@@ -2,9 +2,18 @@ defmodule Voyager.Planning.Trips do
   @moduledoc """
   Functions for accessing trips
   """
+  @behaviour Bodyguard.Policy
 
   alias Voyager.Repo
+  alias Voyager.Accounts.User
   alias Voyager.Planning.Trip
+
+  def get(id) do
+    id
+    |> Trip.by_id()
+    |> Repo.one()
+    |> single_result()
+  end
 
   def add(params, user) do
     %Trip{author_id: user.id}
@@ -36,4 +45,20 @@ defmodule Voyager.Planning.Trips do
     |> Trip.upload_cover(params)
     |> Repo.update()
   end
+
+  def authorize(:add, _, _), do: :ok
+  def authorize(:update, user, trip), do: authorize_author(user, trip)
+  def authorize(:delete, user, trip), do: authorize_author(user, trip)
+  def authorize(:upload_cover, user, trip), do: authorize_member(user, trip)
+
+  defp authorize_member(user, trip), do: authorize_author(user, trip)
+
+  defp authorize_author(%User{id: user_id}, %Trip{author_id: author_id})
+       when author_id == user_id,
+       do: :ok
+
+  defp authorize_author(_, _), do: {:error, :not_authorized}
+
+  defp single_result(nil), do: {:error, :not_found}
+  defp single_result(trip), do: {:ok, trip}
 end

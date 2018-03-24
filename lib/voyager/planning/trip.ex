@@ -6,7 +6,9 @@ defmodule Voyager.Planning.Trip do
   use Arc.Ecto.Schema
 
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
 
+  alias __MODULE__
   alias Voyager.Accounts.User
   alias Voyager.Planning.Cover
 
@@ -64,4 +66,7 @@ defmodule Voyager.Planning.Trip do
     |> cast(params, [:crop_x, :crop_y, :crop_width, :crop_height])
     |> cast_attachments(params, [:cover])
   end
+
+  def query, do: from(t in Trip, where: t.archived == false)
+  def by_id(id), do: from(t in query(), where: t.id == ^id)
 end

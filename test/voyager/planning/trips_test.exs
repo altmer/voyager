@@ -81,4 +81,17 @@ defmodule Voyager.Planning.TripsTest do
       assert true = updated_trip.archived
     end
   end
+
+  describe "get/1" do
+    test "it returns trip by id" do
+      trip = insert(:trip)
+      assert {:ok, found} = Trips.get(trip.id)
+      assert found.id == trip.id
+    end
+
+    test "it returns error if trip is archived" do
+      trip = insert(:trip, archived: true)
+      assert {:error, :not_found} = Trips.get(trip.id)
+    end
+  end
 end

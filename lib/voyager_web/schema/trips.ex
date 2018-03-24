@@ -42,14 +42,14 @@ defmodule VoyagerWeb.Schema.Trips do
   payload_object(:trip_payload, :trip)
 
   input_object :trip_input do
-    field(:name, non_null(:string))
+    field(:name, :string)
     field(:short_description, :string)
     field(:start_date, :date)
-    field(:duration, non_null(:integer))
-    field(:currency, non_null(:string))
-    field(:status, non_null(:string))
+    field(:duration, :integer)
+    field(:currency, :string)
+    field(:status, :string)
     field(:private, :boolean)
-    field(:people_count_for_budget, non_null(:integer))
+    field(:people_count_for_budget, :integer)
   end
 
   object :trips_mutations do
