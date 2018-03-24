@@ -2,7 +2,7 @@ defmodule Voyager.Planning.Trips do
   @moduledoc """
   Functions for accessing trips
   """
-  @behaviour Bodyguard.Policy
+  @behaviour Voyager.Policy
 
   alias Voyager.Repo
   alias Voyager.Accounts.User
@@ -47,7 +47,7 @@ defmodule Voyager.Planning.Trips do
   end
 
   def authorize(:add, _, _), do: :ok
-  def authorize(:update, user, trip), do: authorize_author(user, trip)
+  def authorize(:update, user, trip), do: authorize_member(user, trip)
   def authorize(:delete, user, trip), do: authorize_author(user, trip)
   def authorize(:upload_cover, user, trip), do: authorize_member(user, trip)
 

@@ -108,8 +108,8 @@ defmodule VoyagerWeb.TripsResolverTest do
     end
   end
 
-  @tag :login
   describe "update/3" do
+    @tag :login
     test "updates and returns trip", %{conn: conn, logged_user: logged_user} do
       trip = insert(:trip, author_id: logged_user.id)
 
@@ -152,44 +152,87 @@ defmodule VoyagerWeb.TripsResolverTest do
       assert logged_user.id == updated_trip.author_id
     end
 
-    # test "updates and returns trip", %{conn: conn, logged_user: logged_user} do
-    #   trip = insert(:trip, author_id: logged_user.id)
+    @tag :login
+    test "return not authorized error if user is not participant", %{
+      conn: conn
+    } do
+      trip = insert(:trip)
 
-    #   mutation = """
-    #     mutation UpdateTrip {
-    #       updateTrip(
-    #         input: {
-    #           name: "New name",
-    #           duration: 5
-    #         }
-    #       ) {
-    #         result {
-    #           name
-    #           duration
-    #         }
-    #         successful
-    #         messages {
-    #           field
-    #           message
-    #         }
-    #       }
-    #     }
-    #   """
+      mutation = """
+        mutation UpdateTrip {
+          updateTrip(
+            id: "#{trip.id}",
+            input: {
+              name: "New name"
+            }
+          ) {
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
 
-    #   json =
-    #     conn
-    #     |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
-    #     |> json_response(200)
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
 
-    #   assert true = json["data"]["updateTrip"]["successful"]
-    #   assert "New name" = json["data"]["updateTrip"]["result"]["name"]
-    #   assert 5 = json["data"]["updateTrip"]["result"]["duration"]
+      assert [
+               %{
+                 "message" => "not_authorized"
+               }
+               | _
+             ] = json["errors"]
 
-    #   updated_trip = Repo.get_by(Trip, name: "New name")
+      updated_trip = Repo.get(Trip, trip.id)
+      assert updated_trip.name != "New name"
+    end
 
-    #   assert "Italian getaway" = updated_trip.short_description
-    #   assert 5 = updated_trip.duration
-    #   assert logged_user.id == updated_trip.author_id
-    # end
+    @tag :login
+    test "returns validation errors", %{
+      conn: conn,
+      logged_user: logged_user
+    } do
+      trip = insert(:trip, author_id: logged_user.id)
+
+      mutation = """
+        mutation UpdateTrip {
+          updateTrip(
+            id: "#{trip.id}",
+            input: {
+              name: "New name",
+              currency: ""
+            }
+          ) {
+            successful
+            messages {
+              field
+              message
+            }
+          }
+        }
+      """
+
+      json =
+        conn
+        |> post("/api", AbsintheHelpers.mutation_skeleton(mutation))
+        |> json_response(200)
+
+      assert json["data"]["updateTrip"]["successful"] == false
+
+      assert [
+               %{
+                 "field" => "currency",
+                 "message" => "can't be blank"
+               }
+               | _
+             ] = json["data"]["updateTrip"]["messages"]
+
+      updated_trip = Repo.get(Trip, trip.id)
+      assert updated_trip.name != "New name"
+    end
   end
 end

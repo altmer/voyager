@@ -56,8 +56,6 @@ defmodule Voyager.Mixfile do
       {:bcrypt_elixir, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.7"},
-      # authorization
-      {:bodyguard, "~> 2.2"},
       # emails
       {:bamboo, "~> 0.8"},
       # graphql

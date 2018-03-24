@@ -15,7 +15,7 @@ defmodule VoyagerWeb.Resolvers.Trips do
         context: %{current_user: current_user}
       }) do
     with {:ok, trip} <- VoyagerTrips.get(trip_id),
-         :ok <- Bodyguard.permit(VoyagerTrips, :update, current_user, trip) do
+         :ok <- VoyagerTrips.authorize(:update, current_user, trip) do
       trip
       |> VoyagerTrips.update(args)
       |> Resolvers.mutation_result()
