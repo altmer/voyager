@@ -3,14 +3,6 @@ defmodule VoyagerWeb.Router do
   use Plug.ErrorHandler
   use Sentry.Plug
 
-  pipeline :browser do
-    plug(:accepts, ["html"])
-    plug(:fetch_session)
-    plug(:fetch_flash)
-    plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
-  end
-
   pipeline :api do
     plug(:accepts, ["json"])
 
@@ -31,10 +23,7 @@ defmodule VoyagerWeb.Router do
 
     get("/", VoyagerWeb.RootController, :index)
     put("/upload_avatar", VoyagerWeb.UserController, :upload_avatar)
-
-    if Mix.env() == :dev do
-      forward("/graphiql", Absinthe.Plug.GraphiQL, schema: VoyagerWeb.Schema)
-    end
+    put("/trips/upload_cover", VoyagerWeb.TripController, :upload_cover)
 
     forward(
       "/api",
@@ -45,7 +34,7 @@ defmodule VoyagerWeb.Router do
     )
   end
 
-  # these paths are for oauth only - überauth works with browser pipeline
+  # these paths are for oauth only
   scope "/auth", VoyagerWeb do
     get("/:provider", OmniauthController, :request)
     get("/:provider/callback", OmniauthController, :callback)
