@@ -53,45 +53,20 @@ defmodule Voyager.Planning.TripsTest do
       user = insert(:user)
       assert {:error, %Ecto.Changeset{}} = Trips.add(@invalid_attrs, user)
     end
-  end
 
-  describe "update/1" do
-    test "it updates trip" do
-      trip = insert(:trip)
-      assert {:ok, updated_trip} = Trips.update(trip, %{name: "New name"})
-      assert updated_trip.id == trip.id
-      assert "New name" == updated_trip.name
-    end
+    @invalid_attrs_date %{
+      name: "Venice",
+      short_description: "Italian getaway",
+      duration: 3,
+      currency: "EUR",
+      status: "2_finished",
+      private: false,
+      people_count_for_budget: 2
+    }
 
-    test "it returns error when status is not valid" do
-      trip = insert(:trip)
-      assert {:error, %Ecto.Changeset{}} = Trips.update(trip, %{status: "wrong"})
-    end
-
-    test "it returns error when duration is 0" do
-      trip = insert(:trip)
-      assert {:error, %Ecto.Changeset{}} = Trips.update(trip, %{duration: 0})
-    end
-  end
-
-  describe "delete/1" do
-    test "it marks trip as archived" do
-      trip = insert(:trip)
-      assert {:ok, updated_trip} = Trips.delete(trip)
-      assert true = updated_trip.archived
-    end
-  end
-
-  describe "get/1" do
-    test "it returns trip by id" do
-      trip = insert(:trip)
-      assert {:ok, found} = Trips.get(trip.id)
-      assert found.id == trip.id
-    end
-
-    test "it returns error if trip is archived" do
-      trip = insert(:trip, archived: true)
-      assert {:error, :not_found} = Trips.get(trip.id)
+    test "start_date is required when status is finished" do
+      user = insert(:user)
+      assert {:error, %Ecto.Changeset{}} = Trips.add(@invalid_attrs_date, user)
     end
   end
 end
