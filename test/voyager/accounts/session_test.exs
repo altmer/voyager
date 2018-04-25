@@ -1,4 +1,5 @@
 defmodule Voyager.SessionsTest do
+  @moduledoc false
   use Voyager.DataCase
 
   import Voyager.Factory
@@ -45,10 +46,10 @@ defmodule Voyager.SessionsTest do
 
       {
         :ok,
-        {claims, _}
+        claims
       } = Guardian.decode_and_verify(jwt)
 
-      assert {:ok, token_user} = Guardian.resource_from_claims({claims, jwt})
+      assert {:ok, token_user} = Guardian.resource_from_claims(claims)
       assert token_user.id == user.id
     end
   end

@@ -6,6 +6,7 @@ defmodule VoyagerWeb.SessionsResolverTest do
 
   alias Voyager.Guardian
   alias Voyager.AbsintheHelpers
+  alias Guardian.Plug, as: GuardianPlug
 
   describe "&login/3" do
     test "checks password, generates token and returns currentUser", %{conn: conn} do
@@ -35,10 +36,10 @@ defmodule VoyagerWeb.SessionsResolverTest do
 
       {
         :ok,
-        {claims, _}
+        claims
       } = Guardian.decode_and_verify(token)
 
-      assert {:ok, token_user} = Guardian.resource_from_claims({claims, token})
+      assert {:ok, token_user} = Guardian.resource_from_claims(claims)
       assert token_user.id == user.id
 
       current_user = json["data"]["login"]["currentUser"]
@@ -72,7 +73,7 @@ defmodule VoyagerWeb.SessionsResolverTest do
   describe "&logout/3" do
     @tag :login
     test "revokes current token", %{conn: conn} do
-      token = Guardian.Plug.current_token(conn)
+      token = GuardianPlug.current_token(conn)
       assert {:ok, _} = Guardian.decode_and_verify(token)
 
       mutation = """

@@ -55,13 +55,13 @@ defmodule Voyager.PasswordsTest do
 
       {
         :ok,
-        {%{"iat" => iat, "exp" => exp, "jti" => jti} = claims, _}
+        %{"iat" => iat, "exp" => exp, "jti" => jti} = claims
       } = Guardian.decode_and_verify(jwt)
 
       assert jti == jti_returned
       # token expires in 1 hour
       assert exp == iat + 60 * 60
-      assert {:ok, authorized_user} = Guardian.resource_from_claims({claims, jwt})
+      assert {:ok, authorized_user} = Guardian.resource_from_claims(claims)
       assert user.id == authorized_user.id
     end
   end

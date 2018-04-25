@@ -12,8 +12,8 @@ defmodule Voyager.GoogleTest do
       assert {:ok, auth_user, jwt} = Google.sign_in_or_register(%{email: user.email})
       assert auth_user.id == user.id
 
-      {:ok, {claims, _}} = Guardian.decode_and_verify(jwt)
-      assert {:ok, ^auth_user} = Guardian.resource_from_claims({claims, jwt})
+      {:ok, claims} = Guardian.decode_and_verify(jwt)
+      assert {:ok, ^auth_user} = Guardian.resource_from_claims(claims)
     end
 
     test "it returns error in case of invalida data in auth params" do
@@ -38,8 +38,8 @@ defmodule Voyager.GoogleTest do
       assert "someemail@mail.test" == user.email
       assert "Alex Kummer" == user.name
 
-      {:ok, {claims, _}} = Guardian.decode_and_verify(jwt)
-      assert {:ok, auth_user} = Guardian.resource_from_claims({claims, jwt})
+      {:ok, claims} = Guardian.decode_and_verify(jwt)
+      assert {:ok, auth_user} = Guardian.resource_from_claims(claims)
       assert auth_user.id == user.id
     end
   end

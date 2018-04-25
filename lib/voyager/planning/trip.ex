@@ -20,8 +20,12 @@ defmodule Voyager.Planning.Trip do
   schema "trips" do
     field(:name, :string)
     field(:short_description, :string)
+
+    field(:dates_unknown, :boolean, virtual: true)
     field(:duration, :integer)
     field(:start_date, :date)
+    field(:end_date, :date, virtual: true)
+
     field(:currency, :string)
     field(:status, :string)
     field(:private, :boolean)

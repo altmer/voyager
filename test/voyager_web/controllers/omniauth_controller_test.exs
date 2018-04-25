@@ -38,8 +38,8 @@ defmodule VoyagerWeb.OmniauthControllerTest do
                  redirect_path
                )
 
-      {:ok, {claims, _}} = Guardian.decode_and_verify(jwt)
-      assert {:ok, auth_user} = Guardian.resource_from_claims({claims, jwt})
+      {:ok, claims} = Guardian.decode_and_verify(jwt)
+      assert {:ok, auth_user} = Guardian.resource_from_claims(claims)
 
       assert auth_user.id == user.id
     end
@@ -67,8 +67,8 @@ defmodule VoyagerWeb.OmniauthControllerTest do
                  redirect_path
                )
 
-      {:ok, {claims, _}} = Guardian.decode_and_verify(jwt)
-      assert {:ok, auth_user} = Guardian.resource_from_claims({claims, jwt})
+      {:ok, claims} = Guardian.decode_and_verify(jwt)
+      assert {:ok, auth_user} = Guardian.resource_from_claims(claims)
 
       assert auth_user.email == "someemail@mail.test"
     end

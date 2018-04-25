@@ -22,8 +22,8 @@ defmodule Voyager.Accounts.Sessions do
   end
 
   def from_token(jwt) do
-    with {:ok, {claims, _}} <- Guardian.decode_and_verify(jwt),
-         {:ok, user} <- Guardian.resource_from_claims({claims, jwt}) do
+    with {:ok, claims} <- Guardian.decode_and_verify(jwt),
+         {:ok, user} <- Guardian.resource_from_claims(claims) do
       {:ok, user, claims["jti"]}
     else
       {:error, reason} -> {:error, reason}
