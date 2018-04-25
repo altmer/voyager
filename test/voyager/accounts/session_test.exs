@@ -46,8 +46,14 @@ defmodule Voyager.SessionsTest do
 
       {
         :ok,
-        claims
+        %{"iat" => iat, "exp" => exp, "jti" => jti} = claims
       } = Guardian.decode_and_verify(jwt)
+
+      # expires in 3 days
+      assert exp == iat + 3 * 24 * 60 * 60
+
+      token = Repo.get_by(AuthToken, jti: jti)
+      assert exp == token.exp
 
       assert {:ok, token_user} = Guardian.resource_from_claims(claims)
       assert token_user.id == user.id
