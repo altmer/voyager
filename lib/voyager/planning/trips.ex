@@ -34,7 +34,7 @@ defmodule Voyager.Planning.Trips do
 
   def delete(%Trip{} = trip) do
     trip
-    |> Trip.changeset(%{archived: true})
+    |> Trip.archive_changeset(%{archived: true})
     |> Repo.update()
   end
 

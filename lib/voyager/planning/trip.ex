@@ -14,8 +14,10 @@ defmodule Voyager.Planning.Trip do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
+
   @statuses ["0_draft", "1_planned", "2_finished"]
   @finished "2_finished"
+  @duration_range 1..30
 
   schema "trips" do
     field(:name, :string)
@@ -46,38 +48,110 @@ defmodule Voyager.Planning.Trip do
     timestamps()
   end
 
+  def query, do: from(t in Trip, where: t.archived == false)
+  def by_id(id), do: from(t in query(), where: t.id == ^id)
+
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [
       :name,
       :short_description,
+      :dates_unknown,
       :start_date,
+      :end_date,
       :duration,
       :currency,
       :status,
       :private,
       :people_count_for_budget,
       :report,
-      :archived,
       :author_id
     ])
-    |> validate_required([:name, :duration, :currency, :status, :author_id])
-    |> validate_inclusion(:duration, 1..30)
+    |> validate_required([
+      :name,
+      :currency,
+      :status,
+      :author_id,
+      :dates_unknown
+    ])
     |> validate_inclusion(:status, @statuses)
-    |> validate_start_date()
+    |> process_dates()
   end
 
-  def validate_start_date(%Ecto.Changeset{changes: %{status: @finished}} = changeset),
-    do: changeset |> validate_required(:start_date)
+  def archive_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [
+      :archived
+    ])
+    |> validate_required(:archived)
+  end
 
-  def validate_start_date(changeset), do: changeset
+  defp process_dates(
+         %Ecto.Changeset{valid?: true, changes: %{status: @finished}} = changeset
+       ),
+       do: process_known_dates(changeset)
+
+  defp process_dates(
+         %Ecto.Changeset{valid?: true, changes: %{dates_unknown: false}} = changeset
+       ),
+       do: process_known_dates(changeset)
+
+  defp process_dates(
+         %Ecto.Changeset{valid?: true, changes: %{dates_unknown: true}} = changeset
+       ) do
+    changeset
+    |> validate_required(:duration)
+    |> validate_inclusion(:duration, @duration_range)
+    |> put_change(
+      :start_date,
+      nil
+    )
+  end
+
+  defp process_dates(changeset), do: changeset
+
+  defp process_known_dates(changeset) do
+    changeset
+    |> validate_required([:start_date, :end_date])
+    |> validate_date_range()
+    |> put_duration()
+  end
+
+  defp validate_date_range(
+         %Ecto.Changeset{
+           valid?: true,
+           changes: %{start_date: start_date, end_date: end_date}
+         } = changeset
+       ) do
+    if compute_duration(start_date, end_date) in @duration_range do
+      changeset
+    else
+      add_error(changeset, :end_date, "trip duration invalid")
+    end
+  end
+
+  defp validate_date_range(changeset), do: changeset
+
+  defp put_duration(
+         %Ecto.Changeset{
+           valid?: true,
+           changes: %{start_date: start_date, end_date: end_date}
+         } = changeset
+       ) do
+    changeset
+    |> put_change(
+      :duration,
+      compute_duration(start_date, end_date)
+    )
+  end
+
+  defp put_duration(changeset), do: changeset
+
+  defp compute_duration(start_date, end_date), do: Date.diff(end_date, start_date) + 1
 
   def upload_cover(struct, params \\ %{}) do
     struct
     |> cast(params, [:crop_x, :crop_y, :crop_width, :crop_height])
     |> cast_attachments(params, [:cover])
   end
-
-  def query, do: from(t in Trip, where: t.archived == false)
-  def by_id(id), do: from(t in query(), where: t.id == ^id)
 end

@@ -44,8 +44,10 @@ defmodule VoyagerWeb.Schema.Trips do
   input_object :trip_input do
     field(:name, :string)
     field(:short_description, :string)
-    field(:start_date, :date)
+    field(:dates_unknown, :boolean)
     field(:duration, :integer)
+    field(:start_date, :date)
+    field(:end_date, :date)
     field(:currency, :string)
     field(:status, :string)
     field(:private, :boolean)

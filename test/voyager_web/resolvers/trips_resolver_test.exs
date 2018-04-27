@@ -17,8 +17,9 @@ defmodule VoyagerWeb.TripsResolverTest do
             input: {
               name: "Wernigerode",
               shortDescription: "City break",
+              datesUnknown: false,
               startDate: "2018-03-12",
-              duration: 3,
+              endDate: "2018-03-14",
               currency: "EUR",
               status: "1_planned",
               peopleCountForBudget: 2
@@ -69,8 +70,9 @@ defmodule VoyagerWeb.TripsResolverTest do
             input: {
               name: "Wernigerode",
               shortDescription: "City break",
+              datesUnknown: false,
               startDate: "2018-03-12",
-              duration: 32,
+              endDate: "2018-04-18",
               currency: "EUR",
               status: "1_planned",
               peopleCountForBudget: 2
@@ -98,8 +100,8 @@ defmodule VoyagerWeb.TripsResolverTest do
 
       assert [
                %{
-                 "field" => "duration",
-                 "message" => "is invalid"
+                 "field" => "endDate",
+                 "message" => "trip duration invalid"
                }
                | _
              ] = json["data"]["createTrip"]["messages"]
@@ -119,6 +121,7 @@ defmodule VoyagerWeb.TripsResolverTest do
             id: "#{trip.id}",
             input: {
               name: "New name",
+              datesUnknown: true,
               duration: 5
             }
           ) {

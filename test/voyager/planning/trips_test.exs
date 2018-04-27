@@ -11,8 +11,9 @@ defmodule Voyager.Planning.TripsTest do
     @valid_attrs %{
       name: "Venice on weekend",
       short_description: "Italian getaway",
+      dates_unknown: false,
       start_date: "2018-04-13",
-      duration: 3,
+      end_date: "2018-04-15",
       currency: "EUR",
       status: "1_planned",
       private: false,
@@ -27,7 +28,7 @@ defmodule Voyager.Planning.TripsTest do
       assert @valid_attrs.name == trip.name
       assert @valid_attrs.short_description == trip.short_description
       assert ~D[2018-04-13] == trip.start_date
-      assert @valid_attrs.duration == trip.duration
+      assert 3 == trip.duration
       assert @valid_attrs.currency == trip.currency
       assert @valid_attrs.status == trip.status
       assert @valid_attrs.private === trip.private
@@ -41,8 +42,9 @@ defmodule Voyager.Planning.TripsTest do
     @invalid_attrs %{
       name: "",
       short_description: "Italian getaway",
+      dates_unknown: false,
       start_date: "2018-04-13",
-      duration: 3,
+      end_date: "2018-04-15",
       currency: "EUR",
       status: "1_planned",
       private: false,
@@ -51,12 +53,16 @@ defmodule Voyager.Planning.TripsTest do
 
     test "it returns error if params are invalid" do
       user = insert(:user)
-      assert {:error, %Ecto.Changeset{}} = Trips.add(@invalid_attrs, user)
+
+      assert {:error,
+              %Ecto.Changeset{errors: [name: {"can't be blank", [validation: :required]}]}} =
+               Trips.add(@invalid_attrs, user)
     end
 
     @invalid_attrs_date %{
       name: "Venice",
       short_description: "Italian getaway",
+      dates_unknown: true,
       duration: 3,
       currency: "EUR",
       status: "2_finished",
@@ -64,9 +70,16 @@ defmodule Voyager.Planning.TripsTest do
       people_count_for_budget: 2
     }
 
-    test "start_date is required when status is finished" do
+    test "dates are required when status is finished" do
       user = insert(:user)
-      assert {:error, %Ecto.Changeset{}} = Trips.add(@invalid_attrs_date, user)
+
+      assert {:error,
+              %Ecto.Changeset{
+                errors: [
+                  start_date: {"can't be blank", [validation: :required]},
+                  end_date: {"can't be blank", [validation: :required]}
+                ]
+              }} = Trips.add(@invalid_attrs_date, user)
     end
   end
 end
