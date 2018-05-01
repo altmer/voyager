@@ -33,7 +33,7 @@ defmodule Voyager.Accounts.Sessions do
   def gen_token(nil), do: @auth_failed
 
   def gen_token(user) do
-    {:ok, jwt, _} = Guardian.encode_and_sign(user)
+    {:ok, jwt, _} = Guardian.encode_and_sign(user, %{}, ttl: {1, :week})
     {:ok, user, jwt}
   end
 

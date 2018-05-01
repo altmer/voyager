@@ -40,7 +40,6 @@ config :ex_aws,
 
 config :voyager, Voyager.Guardian,
   issuer: "Voyager",
-  ttl: {3, :days},
   verify_issuer: true,
   secret_key: "${SECRET_KEY_BASE}",
   token_module: Guardian.Token.Jwt

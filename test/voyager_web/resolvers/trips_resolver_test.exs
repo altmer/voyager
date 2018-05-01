@@ -20,9 +20,11 @@ defmodule VoyagerWeb.TripsResolverTest do
               datesUnknown: false,
               startDate: "2018-03-12",
               endDate: "2018-03-14",
+              duration: 5,
               currency: "EUR",
               status: "1_planned",
-              peopleCountForBudget: 2
+              peopleCountForBudget: 2,
+              private: false
             }
           ) {
             result {
@@ -60,6 +62,7 @@ defmodule VoyagerWeb.TripsResolverTest do
       assert "1_planned" = created_trip.status
       assert 2 = created_trip.people_count_for_budget
       assert logged_user.id == created_trip.author_id
+      assert false == created_trip.private
     end
 
     @tag :login
