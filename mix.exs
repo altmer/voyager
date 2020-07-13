@@ -6,7 +6,7 @@ defmodule Voyager.Mixfile do
     [
       app: :voyager,
       version: "0.0.1",
-      elixir: "~> 1.5",
+      elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -42,31 +42,39 @@ defmodule Voyager.Mixfile do
       {:poison, "~> 3.1"},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
+
       # money
-      {:ex_money, "~> 2.2"},
+      {:ex_money, "~> 5.2"},
+
       # file upload
       {:arc, "~> 0.8.0"},
       {:arc_ecto, "~> 0.7.0"},
       {:ex_aws, "~> 1.1"},
       {:hackney, "~> 1.6"},
       {:sweet_xml, "~> 0.6"},
+
       # authentication
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.7"},
+
       # emails
       {:bamboo, "~> 0.8"},
+
       # graphql
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:kronky, "~> 0.5.0"},
+
       # utils
       {:secure_random, "~> 0.5"},
       {:cors_plug, "~> 1.5"},
+
       # error reporting
       {:sentry, "~> 6.1"},
+
       # dev/test
       {:bamboo_smtp, "~> 1.4.0", only: :dev},
       {:phoenix_live_reload, "~> 1.0", only: :dev},

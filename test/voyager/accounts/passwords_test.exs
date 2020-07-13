@@ -115,7 +115,7 @@ defmodule Voyager.PasswordsTest do
     }
 
     test "returns auth error on invalid token" do
-      assert {:error, %CaseClauseError{}} =
+      assert {:error, %ArgumentError{message: "argument error: [\"not a token\"]"}} =
                Passwords.reset_password(
                  "not a token",
                  @valid_password_params

@@ -18,7 +18,7 @@ config :voyager, VoyagerWeb.Endpoint,
 config :voyager, Voyager.Repo,
   adapter: Ecto.Adapters.Postgres,
   hostname: "localhost",
-  port: "25432",
+  port: "5432",
   username: "postgres",
   password: ""
 
