@@ -5,7 +5,7 @@ export APP="/opt/app/bin/voyager"
 ### Run database setup, then start the app in the foreground
 
 if [ "$1" = 'init' ]; then
-  $APP db_create && $APP db_migrate && $APP foreground
+  $APP eval 'Voyager.Release.migrate()' && $APP start
 else
   $APP "$@"
 fi

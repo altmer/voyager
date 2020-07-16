@@ -3,8 +3,8 @@ defmodule Voyager.Accounts.Users do
     CRUD actions concerning users
   """
   alias Ecto.Multi
-  alias Voyager.Repo
   alias Voyager.Accounts.User
+  alias Voyager.Repo
 
   def get(id), do: Repo.get(User, id)
   def get!(id), do: Repo.get!(User, id)
@@ -54,7 +54,7 @@ defmodule Voyager.Accounts.Users do
   defp create_user(params) do
     Multi.new()
     |> Multi.insert(:user, User.changeset(%User{}, params))
-    |> Multi.run(:avatar, fn %{user: user} ->
+    |> Multi.run(:avatar, fn _repo, %{user: user} ->
       upload_avatar(user, params)
     end)
     |> Repo.transaction()

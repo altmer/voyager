@@ -153,7 +153,7 @@ defmodule Voyager.Planning.TripsTest do
       assert {:error,
               %Ecto.Changeset{
                 errors: [
-                  duration: {"is invalid", [validation: :inclusion]}
+                  duration: {"is invalid", [validation: :inclusion, enum: 1..30]}
                 ]
               }} = Trips.add(@invalid_duration, user)
     end

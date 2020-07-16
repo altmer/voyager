@@ -33,10 +33,4 @@ defmodule VoyagerWeb.Router do
       max_complexity: 200
     )
   end
-
-  # these paths are for oauth only
-  scope "/auth", VoyagerWeb do
-    get("/:provider", OmniauthController, :request)
-    get("/:provider/callback", OmniauthController, :callback)
-  end
 end

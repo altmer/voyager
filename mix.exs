@@ -8,9 +8,11 @@ defmodule Voyager.Mixfile do
       version: "0.0.1",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
+      elixirc_options: [warnings_as_errors: true],
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      releases: releases(),
       deps: deps()
     ]
   end
@@ -37,7 +39,9 @@ defmodule Voyager.Mixfile do
       {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
-      {:postgrex, ">= 0.0.0"},
+      {:ecto, "~> 3.4", override: true},
+      {:ecto_sql, "~> 3.4"},
+      {:postgrex, ">= 0.15.0"},
       {:phoenix_html, "~> 2.10"},
       {:poison, "~> 3.1"},
       {:gettext, "~> 0.11"},
@@ -47,9 +51,9 @@ defmodule Voyager.Mixfile do
       {:ex_money, "~> 5.2"},
 
       # file upload
-      {:arc, "~> 0.8.0"},
-      {:arc_ecto, "~> 0.7.0"},
-      {:ex_aws, "~> 1.1"},
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.0"},
+      {:ex_aws, "~> 2.0"},
       {:hackney, "~> 1.6"},
       {:sweet_xml, "~> 0.6"},
 
@@ -57,8 +61,6 @@ defmodule Voyager.Mixfile do
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:ueberauth, "~> 0.4"},
-      {:ueberauth_google, "~> 0.7"},
 
       # emails
       {:bamboo, "~> 0.8"},
@@ -80,8 +82,7 @@ defmodule Voyager.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.9", only: :test},
-      {:ex_machina, "~> 2.1", only: :test},
-      {:distillery, "~> 1.5", runtime: false}
+      {:ex_machina, "~> 2.1", only: :test}
     ]
   end
 
@@ -96,6 +97,14 @@ defmodule Voyager.Mixfile do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
+  end
+
+  defp releases() do
+    [
+      voyager: [
+        include_executables_for: [:unix]
+      ]
     ]
   end
 end
