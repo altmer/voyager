@@ -21,8 +21,9 @@ defmodule VoyagerWeb do
     quote do
       use Phoenix.Controller, namespace: VoyagerWeb
       import Plug.Conn
-      import VoyagerWeb.Router.Helpers
       import VoyagerWeb.Gettext
+
+      alias AppWeb.Router.Helpers, as: Routes
     end
   end
 

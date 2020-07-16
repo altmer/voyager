@@ -36,16 +36,16 @@ defmodule Voyager.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
+      {:phoenix, "~> 1.4.0"},
       {:phoenix_pubsub, "~> 1.0"},
+      {:plug_cowboy, "~> 2.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:ecto, "~> 3.4", override: true},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.15.0"},
       {:phoenix_html, "~> 2.10"},
-      {:poison, "~> 3.1"},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
+      {:jason, "~> 1.2"},
 
       # money
       {:ex_money, "~> 5.2"},
@@ -54,6 +54,7 @@ defmodule Voyager.Mixfile do
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.0"},
       {:ex_aws, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.6"},
       {:sweet_xml, "~> 0.6"},
 
