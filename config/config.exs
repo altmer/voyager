@@ -6,13 +6,17 @@
 use Mix.Config
 
 # General application configuration
-config :voyager, ecto_repos: [Voyager.Repo], frontend_url: "http://localhost:3000"
+config :voyager,
+  ecto_repos: [Voyager.Repo],
+  frontend_url: "http://localhost:3000",
+  admin_password: "test1234"
 
 # Configures the endpoint
 config :voyager, VoyagerWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: VoyagerWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Voyager.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Voyager.PubSub,
+  live_view: [signing_salt: "UJlE+bsFWXNHHh/gtjEjqBfdlz68DnAx"]
 
 config :voyager, Voyager.Repo,
   hostname: "localhost",

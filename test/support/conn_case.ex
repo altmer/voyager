@@ -18,8 +18,11 @@ defmodule VoyagerWeb.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
-      import VoyagerWeb.Router.Helpers
+      import Plug.Conn
+      import Phoenix.ConnTest
+      import VoyagerWeb.ConnCase
+
+      alias AppWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint VoyagerWeb.Endpoint

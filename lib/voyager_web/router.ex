@@ -3,6 +3,24 @@ defmodule VoyagerWeb.Router do
   use Plug.ErrorHandler
   use Sentry.Plug
 
+  import Phoenix.LiveDashboard.Router
+  import Plug.BasicAuth
+
+  pipeline :browser do
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_flash)
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+  end
+
+  pipeline :admins_only do
+    plug(:basic_auth,
+      username: "admin",
+      password: Application.fetch_env!(:voyager, :admin_password)
+    )
+  end
+
   pipeline :api do
     plug(:accepts, ["json"])
 
@@ -32,5 +50,10 @@ defmodule VoyagerWeb.Router do
       analyze_complexity: true,
       max_complexity: 200
     )
+  end
+
+  scope "/admin" do
+    pipe_through([:browser, :admins_only])
+    live_dashboard("/dashboard", metrics: VoyagerWeb.Telemetry)
   end
 end

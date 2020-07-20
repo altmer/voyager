@@ -710,7 +710,7 @@
 									<!-- // END HEADER -->
 								</td>
 							</tr>
-							<%= render @view_module, @view_template, assigns %>
+							<%= @inner_content %>
 							<tr>
 								<td align="center" valign="top" style="padding-bottom:40px;">
 									<!-- BEGIN FOOTER // -->

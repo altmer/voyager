@@ -2,6 +2,7 @@ defmodule VoyagerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :voyager
 
   socket("/socket", VoyagerWeb.UserSocket, websocket: true)
+  socket("/live", Phoenix.LiveView.Socket)
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -21,7 +22,13 @@ defmodule VoyagerWeb.Endpoint do
     socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
     plug(Phoenix.LiveReloader)
     plug(Phoenix.CodeReloader)
+    plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :voyager)
   end
+
+  plug(Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
+  )
 
   plug(Plug.RequestId)
   plug(Plug.Logger)

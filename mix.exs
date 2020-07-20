@@ -23,7 +23,7 @@ defmodule Voyager.Mixfile do
   def application do
     [
       mod: {Voyager.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -36,15 +36,25 @@ defmodule Voyager.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.0"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:phoenix_ecto, "~> 3.2"},
-      {:ecto, "~> 3.4", override: true},
-      {:ecto_sql, "~> 3.4"},
-      {:postgrex, ">= 0.15.0"},
+      # web
+      {:phoenix, "~> 1.5.0"},
+      {:phoenix_pubsub, "~> 2.0"},
+      {:plug_cowboy, "~> 2.1"},
       {:phoenix_html, "~> 2.10"},
       {:gettext, "~> 0.11"},
+      {:phoenix_live_view, "~> 0.13.0"},
+      {:phoenix_live_dashboard, "~> 0.2.0"},
+
+      # telemetry
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"},
+
+      # DB
+      {:phoenix_ecto, "~> 4.1"},
+      {:ecto_sql, "~> 3.4"},
+      {:postgrex, ">= 0.15.0"},
+
+      # json
       {:jason, "~> 1.2"},
 
       # money
