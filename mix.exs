@@ -42,8 +42,8 @@ defmodule Voyager.Mixfile do
       {:plug_cowboy, "~> 2.1"},
       {:phoenix_html, "~> 2.10"},
       {:gettext, "~> 0.11"},
-      {:phoenix_live_view, "~> 0.13.0"},
-      {:phoenix_live_dashboard, "~> 0.2.0"},
+      {:phoenix_live_view, "~> 0.13"},
+      {:phoenix_live_dashboard, "~> 0.2"},
 
       # telemetry
       {:telemetry_metrics, "~> 0.4"},
@@ -83,7 +83,7 @@ defmodule Voyager.Mixfile do
 
       # utils
       {:secure_random, "~> 0.5"},
-      {:cors_plug, "~> 1.5"},
+      {:cors_plug, "~> 2.0"},
 
       # error reporting
       {:sentry, "~> 6.1"},
