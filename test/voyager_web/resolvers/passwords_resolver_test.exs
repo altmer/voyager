@@ -27,7 +27,7 @@ defmodule VoyagerWeb.PasswordsResolverTest do
 
       assert json["data"]["forgotPassword"]["successful"]
 
-      assert_delivered_with(
+      assert_email_delivered_with(
         to: [{user.name, user.email}],
         subject: "Password reset"
       )

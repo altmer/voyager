@@ -23,7 +23,7 @@ defmodule Voyager.PasswordsTest do
 
       assert user.id == emailed_user.id
 
-      assert_delivered_with(
+      assert_email_delivered_with(
         to: [{user.name, user.email}],
         subject: "Password reset"
       )

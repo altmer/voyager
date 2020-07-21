@@ -74,7 +74,7 @@ defmodule Voyager.Mixfile do
       {:bcrypt_elixir, "~> 2.2"},
 
       # emails
-      {:bamboo, "~> 0.8"},
+      {:bamboo, "~> 1.5"},
 
       # graphql
       {:absinthe, "~> 1.4"},
@@ -89,7 +89,7 @@ defmodule Voyager.Mixfile do
       {:sentry, "~> 6.1"},
 
       # dev/test
-      {:bamboo_smtp, "~> 1.4.0", only: :dev},
+      {:bamboo_smtp, "~> 2.1", only: :dev},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.9", only: :test},
