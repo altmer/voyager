@@ -7,7 +7,6 @@ defmodule Voyager.PasswordsTest do
 
   import Voyager.Factory
 
-  alias Comeonin.Bcrypt
   alias Voyager.Guardian
   alias Voyager.Repo
   alias Voyager.Accounts.{AuthToken, Passwords, User, Users}
@@ -133,7 +132,7 @@ defmodule Voyager.PasswordsTest do
                )
 
       user = Repo.get(User, user.id)
-      refute Bcrypt.checkpw("new_password", user.encrypted_password)
+      refute Bcrypt.verify_pass("new_password", user.encrypted_password)
     end
 
     test "returns auth error if user does not exist anymore" do
@@ -151,7 +150,7 @@ defmodule Voyager.PasswordsTest do
 
     test "returns auth error if token is valid but not for password reset" do
       user = insert(:user)
-      refute Bcrypt.checkpw("new_password", user.encrypted_password)
+      refute Bcrypt.verify_pass("new_password", user.encrypted_password)
 
       {:ok, jwt, _} =
         Guardian.encode_and_sign(
@@ -167,7 +166,7 @@ defmodule Voyager.PasswordsTest do
                )
 
       user = Repo.get(User, user.id)
-      refute Bcrypt.checkpw("new_password", user.encrypted_password)
+      refute Bcrypt.verify_pass("new_password", user.encrypted_password)
     end
 
     test "returns changeset error if password params are invalid" do
@@ -191,12 +190,12 @@ defmodule Voyager.PasswordsTest do
       assert {:ok, _claims} = Guardian.decode_and_verify(jwt)
 
       user = Repo.get(User, user.id)
-      refute Bcrypt.checkpw("new_password", user.encrypted_password)
+      refute Bcrypt.verify_pass("new_password", user.encrypted_password)
     end
 
     test "updates password if params are valid and invalidates token" do
       user = insert(:user)
-      refute Bcrypt.checkpw("new_password", user.encrypted_password)
+      refute Bcrypt.verify_pass("new_password", user.encrypted_password)
 
       {:ok, jwt, %{"jti" => jti}} =
         Guardian.encode_and_sign(
@@ -215,7 +214,7 @@ defmodule Voyager.PasswordsTest do
 
       assert updated_user.id == user.id
 
-      assert Bcrypt.checkpw(
+      assert Bcrypt.verify_pass(
                "new_password",
                updated_user.encrypted_password
              )

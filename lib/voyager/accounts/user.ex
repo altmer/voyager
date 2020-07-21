@@ -8,7 +8,6 @@ defmodule Voyager.Accounts.User do
   import Ecto.Changeset
 
   alias Voyager.Accounts.Avatar
-  alias Comeonin.Bcrypt
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -84,7 +83,7 @@ defmodule Voyager.Accounts.User do
         put_change(
           current_changeset,
           :encrypted_password,
-          Bcrypt.hashpwsalt(password)
+          Bcrypt.hash_pwd_salt(password)
         )
 
       _ ->
@@ -95,7 +94,7 @@ defmodule Voyager.Accounts.User do
   defp validate_current_password(current_changeset, encrypted_password) do
     case current_changeset
          |> get_change(:old_password)
-         |> Bcrypt.checkpw(encrypted_password) do
+         |> Bcrypt.verify_pass(encrypted_password) do
       true -> current_changeset
       _ -> add_error(current_changeset, :old_password, "is invalid")
     end

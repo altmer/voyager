@@ -4,17 +4,16 @@ defmodule Voyager.Accounts.Sessions do
   """
   @auth_failed {:error, :auth_failed}
 
+  alias Voyager.Accounts.User
   alias Voyager.Guardian
   alias Voyager.Repo
-  alias Voyager.Accounts.User
-  alias Comeonin.Bcrypt
 
   def authenticate(%{email: nil}), do: @auth_failed
   def authenticate(%{email: ""}), do: @auth_failed
 
   def authenticate(%{email: email, password: password}) do
     with user <- Repo.get_by(User, email: String.downcase(email)),
-         true <- check_password(user, password) do
+         true <- verify_password(user, password) do
       gen_token(user)
     else
       _ -> @auth_failed
@@ -37,8 +36,8 @@ defmodule Voyager.Accounts.Sessions do
     {:ok, user, jwt}
   end
 
-  defp check_password(nil, _), do: false
+  defp verify_password(nil, _), do: false
 
-  defp check_password(user, password),
-    do: Bcrypt.checkpw(password, user.encrypted_password)
+  defp verify_password(user, password),
+    do: Bcrypt.verify_pass(password, user.encrypted_password)
 end

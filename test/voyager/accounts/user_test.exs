@@ -5,7 +5,6 @@ defmodule Voyager.UserTest do
   import Voyager.Factory
 
   alias Voyager.Accounts.User
-  alias Comeonin.Bcrypt
 
   @valid_attrs %{
     email: "test@mail.test",
@@ -73,7 +72,7 @@ defmodule Voyager.UserTest do
   test "insert user" do
     changeset = User.changeset(%User{}, @valid_attrs)
     assert {:ok, user} = Repo.insert(changeset)
-    assert Bcrypt.checkpw("password", user.encrypted_password)
+    assert Bcrypt.verify_pass("password", user.encrypted_password)
   end
 
   test "changeset with duplicate email" do
@@ -99,7 +98,7 @@ defmodule Voyager.UserTest do
       })
 
     assert {:ok, user} = Repo.update(changeset)
-    assert Bcrypt.checkpw("new_password", user.encrypted_password)
+    assert Bcrypt.verify_pass("new_password", user.encrypted_password)
   end
 
   test "invalid password reset" do

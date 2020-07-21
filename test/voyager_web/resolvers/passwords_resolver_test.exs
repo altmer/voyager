@@ -4,9 +4,9 @@ defmodule VoyagerWeb.PasswordsResolverTest do
 
   import Voyager.Factory
 
-  alias Voyager.Guardian
   alias Voyager.AbsintheHelpers
   alias Voyager.Accounts.Users
+  alias Voyager.Guardian
 
   describe "&forgot_password/3" do
     test "send reset password email if user is found", %{conn: conn} do
@@ -89,7 +89,7 @@ defmodule VoyagerWeb.PasswordsResolverTest do
       assert [%{"message" => "token_expired"} | _] = json["errors"]
 
       updated_user = Users.get!(user.id)
-      refute Comeonin.Bcrypt.checkpw("test1234", updated_user.encrypted_password)
+      refute Bcrypt.verify_pass("test1234", updated_user.encrypted_password)
     end
 
     test "returns validations errors when data is not valid", %{conn: conn} do
@@ -132,7 +132,7 @@ defmodule VoyagerWeb.PasswordsResolverTest do
              ] = json["data"]["resetPassword"]["messages"]
 
       updated_user = Users.get!(user.id)
-      refute Comeonin.Bcrypt.checkpw("test1234", updated_user.encrypted_password)
+      refute Bcrypt.verify_pass("test1234", updated_user.encrypted_password)
     end
 
     test "updates user's password", %{conn: conn} do
@@ -168,7 +168,7 @@ defmodule VoyagerWeb.PasswordsResolverTest do
       assert json["data"]["resetPassword"]["result"]["id"] == to_string(user.id)
 
       updated_user = Users.get!(user.id)
-      assert Comeonin.Bcrypt.checkpw("test1234", updated_user.encrypted_password)
+      assert Bcrypt.verify_pass("test1234", updated_user.encrypted_password)
     end
   end
 end

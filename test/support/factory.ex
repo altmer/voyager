@@ -4,7 +4,6 @@ defmodule Voyager.Factory do
   """
   use ExMachina.Ecto, repo: Voyager.Repo
 
-  alias Comeonin.Bcrypt
   alias Faker.{Person, Internet}
   alias Voyager.Accounts.User
   alias Voyager.Planning.Trip
@@ -13,7 +12,7 @@ defmodule Voyager.Factory do
     %User{
       name: Person.name(),
       email: Internet.safe_email(),
-      encrypted_password: Bcrypt.hashpwsalt("12345678"),
+      encrypted_password: Bcrypt.hash_pwd_salt("12345678"),
       home_town_id: "1234",
       currency: "EUR"
     }

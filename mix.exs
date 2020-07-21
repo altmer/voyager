@@ -69,9 +69,9 @@ defmodule Voyager.Mixfile do
       {:sweet_xml, "~> 0.6"},
 
       # authentication
-      {:guardian, "~> 1.0"},
-      {:comeonin, "~> 4.0"},
-      {:bcrypt_elixir, "~> 1.0"},
+      {:guardian, "~> 2.1"},
+      {:comeonin, "~> 5.3"},
+      {:bcrypt_elixir, "~> 2.2"},
 
       # emails
       {:bamboo, "~> 0.8"},
