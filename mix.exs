@@ -86,12 +86,12 @@ defmodule Voyager.Mixfile do
       {:cors_plug, "~> 2.0"},
 
       # error reporting
-      {:sentry, "~> 6.1"},
+      {:sentry, "~> 8.0"},
 
       # dev/test
       {:bamboo_smtp, "~> 2.1", only: :dev},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.9", only: :test},
       {:ex_machina, "~> 2.1", only: :test}
     ]

@@ -1,7 +1,6 @@
 defmodule VoyagerWeb.Router do
   use VoyagerWeb, :router
   use Plug.ErrorHandler
-  use Sentry.Plug
 
   import Phoenix.LiveDashboard.Router
   import Plug.BasicAuth

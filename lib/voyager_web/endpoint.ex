@@ -1,5 +1,6 @@
 defmodule VoyagerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :voyager
+  use Sentry.PlugCapture
 
   socket("/socket", VoyagerWeb.UserSocket, websocket: true)
   socket("/live", Phoenix.LiveView.Socket)
@@ -39,6 +40,8 @@ defmodule VoyagerWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Jason
   )
+
+  plug(Sentry.PlugContext)
 
   plug(Plug.MethodOverride)
   plug(Plug.Head)
