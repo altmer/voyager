@@ -4,9 +4,9 @@ defmodule VoyagerWeb.Resolvers do
   """
   alias Ecto.Changeset
 
+  alias Kronky.ChangesetParser
   alias Kronky.Payload
   alias Kronky.ValidationMessage
-  alias Kronky.ChangesetParser
 
   def single_query_result(nil), do: {:error, :not_found}
   def single_query_result(result), do: {:ok, result}
