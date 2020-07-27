@@ -1,9 +1,5 @@
 import Config
 
-config :voyager,
-  frontend_url: System.fetch_env!("FRONTEND_URL"),
-  admin_password: System.fetch_env!("ADMIN_PASSWORD")
-
 config :voyager, Voyager.Guardian, secret_key: System.fetch_env!("SECRET_KEY_BASE")
 
 config :ex_aws,

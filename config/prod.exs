@@ -18,6 +18,10 @@ config :voyager, VoyagerWeb.Endpoint,
   server: true,
   root: "."
 
+config :voyager,
+  frontend_url: "https://betatravel.hmstr.rocks",
+  admin_password: "obDAodQn82FD89vkuizeMt"
+
 # Do not print debug messages in production
 config :logger,
   level: :info,

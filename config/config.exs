@@ -44,7 +44,7 @@ config :voyager, Voyager.Guardian,
 
 config :voyager, Voyager.Emails.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  from: "noreply@travel.hmstr.me"
+  from: "noreply@travel.hmstr.rocks"
 
 # Configures Elixir's Logger
 config :logger, :console,

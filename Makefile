@@ -6,3 +6,5 @@ help:
 build:
 	docker build -f Dockerfile -t altmer/voyager:latest .
 	docker push altmer/voyager
+deploy: build
+	make -C $(DEPLOY_PATH) voyager
